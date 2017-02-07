@@ -1,0 +1,172 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="opus.auctor.viewElements.weeklyProgram">
+
+    <!--Fİrst Column-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:text="@string/monday"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/mondayTxt"
+                android:padding="5dp"
+                android:layout_weight="1"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:ellipsize="end"
+                android:maxLines="1"
+                />
+
+            <ListView
+                android:visibility="invisible"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/classesMonday"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/mondayTxt"
+                />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <View android:id="@+id/separator1"
+                android:layout_width = "2dp"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical ="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/colorPrimary" />
+
+            <TextView
+                android:text="@string/tuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tuesdayTxt"
+                android:padding="5dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                />
+
+            <ListView
+                android:visibility="invisible"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/classesTuesday"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/tuesdayTxt"
+                />
+
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <View android:id="@+id/separator2"
+                android:layout_width = "2dp"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical ="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/colorPrimary" />
+
+            <TextView
+                android:text="@string/wednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/wednesdayTxt"
+                android:padding="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                />
+
+            <ListView
+                android:visibility="invisible"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/classesWednesday"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/wednesdayTxt"
+                />
+
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <View android:id="@+id/separator3"
+                android:layout_width = "2dp"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical ="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/colorPrimary"
+                />
+
+            <TextView
+                android:text="@string/thursday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/thursdayTxt"
+                android:padding="5dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                />
+
+            <ListView
+                android:visibility="invisible"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/classesThursday"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/thursdayTxt"
+                />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <View android:id="@+id/separator4"
+                android:layout_width = "2dp"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical ="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/colorPrimary"
+                />
+
+            <TextView
+                android:text="@string/friday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fridayTxt"
+                android:padding="5dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                />
+
+            <ListView
+                android:visibility="invisible"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/classesFriday"
+                android:layout_below="@+id/fridayTxt" />
+        </RelativeLayout>
+    </LinearLayout>
+</FrameLayout>

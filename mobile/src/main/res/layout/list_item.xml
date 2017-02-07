@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="match_parent" android:id="@+id/list_item">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="s_name"
+        android:id="@+id/shortName"
+        android:textSize="12sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAlignment="center"
+        />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="className"
+        android:id="@+id/className"
+        android:textSize="7sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="teacherName"
+        android:id="@+id/teacher"
+        android:textSize="7sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAlignment="center"
+        />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="ClassLocation"
+        android:id="@+id/classLocation"
+        android:textSize="13sp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="H1:M1"
+        android:id="@+id/time1"
+        android:textSize="13sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:clickable="false"
+        android:layout_weight="5"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="H2:M2"
+        android:id="@+id/time2"
+        android:textSize="13sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_weight="5"
+        android:textAlignment="center"
+        />
+
+</LinearLayout>

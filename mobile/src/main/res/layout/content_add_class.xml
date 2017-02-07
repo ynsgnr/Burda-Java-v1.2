@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="opus.auctor.AddClass"
+    tools:showIn="@layout/activity_add_class"
+    android:id="@+id/addClass"
+    android:fillViewport="true"
+    android:clickable="false">
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/s_name"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/txt"
+        android:hint="@string/courseCodeExp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/courseCode"
+        android:id="@+id/courseCode"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/s_name"
+        android:layout_alignStart="@+id/s_name" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/courseName"
+        android:id="@+id/courseNameTxt"
+        android:layout_below="@+id/s_name"
+        android:layout_alignLeft="@+id/s_name"
+        android:layout_alignStart="@+id/s_name"
+        android:layout_marginTop="30dp" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/courseName"
+        android:layout_below="@+id/courseNameTxt"
+        android:layout_alignLeft="@+id/courseNameTxt"
+        android:layout_alignStart="@+id/courseNameTxt"
+        android:layout_alignRight="@+id/s_name"
+        android:layout_alignEnd="@+id/s_name"
+        android:hint="@string/courseNameExp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/term"
+        android:id="@+id/termTxt"
+        android:layout_below="@+id/courseName"
+        android:layout_alignLeft="@+id/courseName"
+        android:layout_alignStart="@+id/courseName"
+        android:layout_marginTop="30dp" />
+
+    <Spinner
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/terms"
+        android:layout_below="@+id/termTxt"
+        android:layout_alignLeft="@+id/termTxt"
+        android:layout_alignStart="@+id/termTxt"
+        android:visibility="invisible"
+        android:spinnerMode="dialog"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/classTime"
+        android:id="@+id/classHours"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/addTerm"
+        android:layout_alignLeft="@+id/terms"
+        android:layout_alignStart="@+id/terms" />
+
+    <opus.auctor.viewElements.NonScrollListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/classTimes"
+        android:layout_below="@+id/classHours"
+        android:layout_alignLeft="@+id/classHours"
+        android:layout_alignStart="@+id/classHours"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/classCode"
+        android:id="@+id/crnTxt"
+        android:layout_below="@+id/classTimes"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="70dp" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/crn"
+        android:layout_below="@+id/crnTxt"
+        android:layout_alignLeft="@+id/crnTxt"
+        android:layout_alignStart="@+id/crnTxt"
+        android:layout_alignRight="@+id/classHours"
+        android:layout_alignEnd="@+id/classHours"
+        android:hint="@string/classCodeExp"
+        android:singleLine="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/teacher"
+        android:id="@+id/teacherTxt"
+        android:layout_below="@+id/crn"
+        android:layout_alignLeft="@+id/crn"
+        android:layout_alignStart="@+id/crn"
+        android:layout_marginTop="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/classRoom"
+        android:id="@+id/classRoomTxt"
+        android:layout_below="@+id/teacher"
+        android:layout_alignLeft="@+id/teacher"
+        android:layout_alignStart="@+id/teacher"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/classLocation"
+        android:id="@+id/classLocationTxt"
+        android:layout_below="@+id/classRoom"
+        android:layout_alignLeft="@+id/classRoom"
+        android:layout_alignStart="@+id/classRoom"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/notes"
+        android:id="@+id/notesTxt"
+        android:layout_below="@+id/classLocation"
+        android:layout_alignLeft="@+id/classLocation"
+        android:layout_alignStart="@+id/classLocation"
+        android:layout_marginTop="30dp"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/notes"
+        android:layout_alignTop="@+id/notesTxt"
+        android:layout_alignLeft="@+id/notesTxt"
+        android:layout_alignStart="@+id/notesTxt"
+        android:layout_below="@+id/notesTxt"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/noTerm"
+        android:id="@+id/noTermTxt"
+        android:layout_alignBottom="@+id/terms"
+        android:layout_alignLeft="@+id/terms"
+        android:layout_alignStart="@+id/terms" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType=""
+        android:ems="10"
+        android:id="@+id/classRoom"
+        android:hint="@string/classRoomExp"
+        android:singleLine="true"
+        android:layout_below="@+id/classRoomTxt"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:visibility="invisible"
+        android:layout_height="20dp"
+        android:text="@string/addTerm"
+        android:id="@+id/addLocation"
+        android:background="@drawable/custom_button"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:layout_width="100dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_alignBottom="@+id/classLocationTxt"
+        android:layout_toRightOf="@+id/classLocationTxt"
+        android:layout_toEndOf="@+id/classLocationTxt"  />
+
+
+    <fragment
+        android:id="@+id/classLocation"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/classLocationTxt"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/teacher"
+        android:hint="@string/teacherExp"
+        android:singleLine="true"
+        android:layout_below="@+id/teacherTxt"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/addClassTime"
+        style="@style/Widget.AppCompat.Button"
+        android:background="@drawable/custom_button"
+        android:text="+"
+        android:textColor="#FFFFFF"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_alignBottom="@+id/classHours"
+        android:layout_toRightOf="@+id/classHours"
+        android:layout_toEndOf="@+id/classHours" />
+
+    <Button
+        android:layout_height="20dp"
+        android:text="@string/addTerm"
+        android:id="@+id/addTerm"
+        android:background="@drawable/custom_button"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:layout_width="100dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_alignBottom="@+id/noTermTxt"
+        android:layout_toRightOf="@+id/noTermTxt"
+        android:layout_toEndOf="@+id/noTermTxt" />
+
+</RelativeLayout>
+</ScrollView>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="opus.auctor.classDetails"
+    tools:showIn="@layout/activity_class_details">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/notificationsToggle"
+            android:layout_marginLeft="27dp"
+            android:layout_marginStart="27dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView2"
+            android:layout_toEndOf="@+id/textView2" />
+
+
+        <TextView
+            android:text="@string/notificatons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:textSize="18sp"
+            android:layout_alignBaseline="@+id/notificationsToggle"
+            android:layout_alignBottom="@+id/notificationsToggle"/>
+
+        <opus.auctor.viewElements.CircularProgressBar
+            android:id="@+id/circularprogressbar"
+            style="@style/Widget.ProgressBar.CircularProgressBar"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_below="@+id/notificationsToggle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="33dp" />
+
+        <!-- Caldroid Fragment Holder -->
+        <LinearLayout
+            android:id="@+id/calendar1"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="270dp"></LinearLayout>
+
+
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

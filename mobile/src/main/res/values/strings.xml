@@ -1,0 +1,98 @@
+<resources>
+    <string name="app_name">Burda!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_add_class">AddClass</string>
+    <string name="courseCode">Course Code</string>
+    <string name="courseCodeExp">Ex:BLG101</string>
+    <string name="courseName">Course Name</string>
+    <string name="courseNameExp">Ex:Computer Science</string>
+    <string name="term">Term:</string>
+
+
+
+    <string name="chooseTerm">Please Choose Term</string>
+    <string name="chooseTime">Please Add a Class Time</string>
+    <string name="chooseName">Please Add a Name</string>
+    <string name="termName">Term Name:</string>
+    <string name="termExp">Exp:Spring 2016</string>
+    <string name="termDate">Term Date</string>
+    <string name="startDate">Start Date</string>
+    <string name="endDate">End Date</string>
+    <string name="noTerm">No term found:</string>
+    <string name="classTime">Class Time:</string>
+    <string name="startTime">Start Time</string>
+    <string name="finishTime">Finish Time</string>
+    <string name="classCode">Class Code</string>
+    <string name="classCodeExp">Ex:12820</string>
+    <string name="teacher">Teacher</string>
+    <string name="teacherExp">Ex:Oya Kurşun</string>
+    <string name="classRoom">Class Room:</string>
+    <string name="classRoomExp">Ex:D204</string>
+    <string name="notes">Notes</string>
+    <string name="classLocation">Class Location:</string>
+    <string name="addTerm">Add Term</string>
+    <string name="addClass">Add Class</string>
+    <string name="notificatons">Notifications:</string>
+    <!--Weekdays-->
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string-array name="weekDays">
+        <item>@string/monday</item>
+        <item>@string/tuesday</item>
+        <item>@string/wednesday</item>
+        <item>@string/thursday</item>
+        <item>@string/friday</item>
+        <item>@string/saturday</item>
+        <item>@string/sunday</item>
+    </string-array>
+
+    <string name="delete">Delete</string>
+
+    <string name="losingAttData">Attendance data will be lost</string>
+    <string name="delAttLostData">Deleting this term will delete all attendance data in the classes of this term</string>
+    <string name="changeClassLostData">Changing term will delete attendance data of this class.</string>
+    <string name="continueTxt">continue</string>
+    <string name="noLocation">Burda! is unable to get your location</string>
+
+    <string name="notifyAttended">Looks like you are attended</string>
+    <string name="notifyAttendedBefore">to class of </string>
+    <string name="notifyAttendedAfter"> </string>
+
+    <string name="notifySkipper">Looks like you did not attended</string>
+    <string name="notifySkipperBefore">to class </string>
+    <string name="notifySkipperAfter"> </string>
+
+    <string name="attQuestionBefore">Did you attended </string>
+    <string name="attQuestionAfter"> class?</string>
+
+    <string name="delClass">Deleting class</string>
+    <string name="delClassLong">Are you sure to delete this class?</string>
+
+    <string name="noClass">No Class</string>
+    <string name="attended">Attended</string>
+    <string name="cancel">Canceled</string>
+    <string name="cancel2">Cancel</string>
+    <string name="skip">SKIPPED</string>
+
+    <string name="title_activity_class_details">classDetails</string>
+
+    <string name="calendarLongPress">Long press to change attendance status</string>
+    <string name="noClassBefore">No class at </string>
+    <string name="noClassAfter"> </string>
+    <string name="markedAs">marked as</string>
+
+    <string name="error">Error</string>
+    <string name="notAttended">Not Attended</string>
+
+    <string name="notTerm"> is not in term  </string>
+    <string name="startingNotificationStart"> </string>
+    <string name="startingNotificationEnd"> starting!</string>
+    <string name="startingNotificationBody">Your class is about to start</string>
+
+    <string name="checkTime">Start time can\'t come after end time</string>
+</resources>
