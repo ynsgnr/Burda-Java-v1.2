@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.TimeZone;
-import java.util.logging.Logger;
 
 public class setAlarmReceiver extends BroadcastReceiver {
     public setAlarmReceiver() {

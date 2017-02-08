@@ -522,6 +522,7 @@ public class classDetails extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
+                mMap.clear();
                 location = new LatLng(tmp.geoFence.Lat,tmp.geoFence.Long);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12));
                 MarkerOptions a = new MarkerOptions().position(location);

@@ -30,11 +30,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,7 +39,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 
-import com.google.android.gms.location.places.*;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -76,12 +72,11 @@ public class AddClass extends AppCompatActivity implements
     Spinner terms;
     Button addTerm;
     TextView noTerm;
-    LatLng location;
+    LatLng location=null;
     FloatingActionButton del;
 
     ArrayList<term> termList;
     term T=new term();
-
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     int MY_PERMISSIONS_LOCATION;
@@ -90,6 +85,7 @@ public class AddClass extends AppCompatActivity implements
     public double Lat;
     SupportMapFragment mapFragment;
     Class tmp;
+    //Boolean isMapBig=false;
 
     int PLACE_PICKER_REQUEST = 1;
 
@@ -259,8 +255,6 @@ public class AddClass extends AppCompatActivity implements
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
                 .build();
 
         //finished
@@ -390,7 +384,6 @@ public class AddClass extends AppCompatActivity implements
     @Override
     public void onResume(){
         super.onResume();
-
         Database db = new Database(getApplicationContext());
         termList=db.terms();
         if (termList.size()==0){
@@ -440,6 +433,7 @@ public class AddClass extends AppCompatActivity implements
                 terms.setSelection(spinnerId);
             }
         }
+
     }
 
     @Override
@@ -469,6 +463,9 @@ public class AddClass extends AppCompatActivity implements
         // applications that do not require a fine-grained location and that do not need location
         // updates. Gets the best and most recent location currently available, which may be null
         // in rare cases when a location is not available.
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.classLocation);
+        mapFragment.getMapAsync(this);
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
@@ -491,15 +488,10 @@ public class AddClass extends AppCompatActivity implements
             }
         } else {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            if (mLastLocation != null) {
+            if (mLastLocation != null && location==null) {
                 Lat = mLastLocation.getLatitude();
                 Long = mLastLocation.getLongitude();
                 location = new LatLng(Lat, Long);
-                mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.classLocation);
-                mapFragment.getMapAsync(this);
-            } else {
-                Toast.makeText(this, "No location", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -507,59 +499,52 @@ public class AddClass extends AppCompatActivity implements
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12));
-        MarkerOptions a = new MarkerOptions().position(location);
-        Marker m = googleMap.addMarker(a);
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-        }
-        //Toast.makeText(getApplicationContext(), "Long:" + String.valueOf(Long) + "Lat:" + String.valueOf(Lat), Toast.LENGTH_LONG).show();
-
-        UiSettings fixed = googleMap.getUiSettings();
-        fixed.setAllGesturesEnabled(false);
-
         mMap=googleMap;
 
-        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng arg0) {
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                try {
-                    startActivityForResult(builder.build(AddClass.this), PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesRepairableException e) {
-                    e.printStackTrace();
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                }
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12));
+        MarkerOptions a = new MarkerOptions().position(location);
+        Marker m = mMap.addMarker(a);
+        /*if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+        }*/
+        //Toast.makeText(getApplicationContext(), "Long:" + String.valueOf(Long) + "Lat:" + String.valueOf(Lat), Toast.LENGTH_LONG).show();
 
+        final UiSettings fixed = mMap.getUiSettings();
+        fixed.setAllGesturesEnabled(false);
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                Intent intent = new Intent(AddClass.this.getApplicationContext(),MapsActivity.class);
+                //send data to addClass activity intent.putExtra("key", value);
+                intent.putExtra("Lat",Lat);
+                intent.putExtra("Long",Long);
+                startActivityForResult(intent,PLACE_PICKER_REQUEST);
             }
         });
         googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                                                 @Override
                                                 public void onMapLongClick(LatLng latLng) {
-                                                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                                                    try {
-                                                        startActivityForResult(builder.build(AddClass.this), PLACE_PICKER_REQUEST);
-                                                    } catch (GooglePlayServicesRepairableException e) {
-                                                        e.printStackTrace();
-                                                    } catch (GooglePlayServicesNotAvailableException e) {
-                                                        e.printStackTrace();
-                                                    }
+                                                    Intent intent = new Intent(AddClass.this.getApplicationContext(),MapsActivity.class);
+                                                    //send data to addClass activity intent.putExtra("key", value);
+                                                    intent.putExtra("Lat",Lat);
+                                                    intent.putExtra("Long",Long);
+                                                    startActivityForResult(intent,PLACE_PICKER_REQUEST);
                                                 }
                                             }
         );
 
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, this);
-                location = place.getLatLng();
-                Long=location.longitude;
-                Lat=location.latitude ;
-                Log.d("location",Long+Lat+"");
+                Long = data.getExtras().getDouble("Long",0);
+                Lat = data.getExtras().getDouble("Lat",0);
+                location = new LatLng(Lat,Long);
+                Log.d("location",Long+"-"+Lat);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12));
                 MarkerOptions a = new MarkerOptions().position(location);
                 mMap.clear();
@@ -817,5 +802,4 @@ public class AddClass extends AppCompatActivity implements
             return convertView;
         }
     }
-
 }

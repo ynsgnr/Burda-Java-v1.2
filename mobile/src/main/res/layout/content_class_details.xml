@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="270dp"></LinearLayout>
+            android:layout_marginTop="270dp"/>
 
 
     </RelativeLayout>

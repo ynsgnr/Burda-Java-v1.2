@@ -1,7 +1,6 @@
 package opus.auctor;
 
-import android.app.AlarmManager;
-import android.app.IntentService;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,7 +15,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.NetworkOnMainThreadException;
 import android.os.StrictMode;
@@ -27,7 +25,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import org.apache.commons.lang3.SerializationUtils;
-import org.apache.commons.lang3.mutable.MutableInt;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,14 +52,14 @@ public class classStartService extends Service {
             c=db.GetClassById(Integer.decode(intent.getDataString()));
         }
         if (c != null && c.Term!=null && c.Term.isDateInTerm(Calendar.getInstance())){
-            Log.d("classstarttime","checking hour and minute");
+                Log.d("classstarttime","checking hour and minute");
                 c.setTime();
                 Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.HOUR,c.time0.hour);
                 cal.set(Calendar.MINUTE,c.time0.minute);
                 cal.add(Calendar.MINUTE,-10);
-            Log.d("clsassstarttime","Time is:"+cal.get(Calendar.HOUR)+":"+cal.get(Calendar.MINUTE)+" "+c.day+" "+cal.get(Calendar.DAY_OF_WEEK));
-                if((cal.get(Calendar.DAY_OF_WEEK)-1)==c.day && cal.compareTo(Calendar.getInstance())>=0) {
+                Log.i("clsassstarttime","Time is:"+cal.get(Calendar.HOUR)+":"+cal.get(Calendar.MINUTE)+" "+c.day+" "+cal.get(Calendar.DAY_OF_WEEK));
+                //if(((cal.get(Calendar.DAY_OF_WEEK))-1)==c.day && cal.compareTo(Calendar.getInstance())<=0) {
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                     StrictMode.setThreadPolicy(policy);
                     Log.d("classStartService", "send class starting notification");
@@ -86,7 +83,10 @@ public class classStartService extends Service {
                     NotificationCompat.Builder mBuilder =
                             new NotificationCompat.Builder(getApplicationContext())
                                     .setSmallIcon(R.drawable.logoblue)
-                                    .setContentTitle(getResources().getString(R.string.startingNotificationStart)+c.s_name + "-" + c.name + getResources().getString(R.string.startingNotificationEnd))
+                                    .setContentTitle(getResources().getString(R.string.startingNotificationStart)+c.s_name + "-" + c.name
+                                            + getResources().getString(R.string.startingNotificationMid)
+                                            + " " + c.classLocation+" "
+                                            + getResources().getString(R.string.startingNotificationEnd))
                                     .setContentText(getResources().getString(R.string.startingNotificationBody))
                                     .setVibrate(new long[]{1000, 1000})
                                     .setLights(ContextCompat.getColor(getApplicationContext(), R.color.logoColor), 300, 300)
@@ -130,10 +130,7 @@ public class classStartService extends Service {
                             (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
                     // mId allows you to update the notification later on.
                     mNotificationManager.notify(c.id, mBuilder.build());
-                }
-            else{
-            Log.d("classStartService","Not time");
-            }
+            //}
         }
         else{
             Log.d("classStartService","null class");

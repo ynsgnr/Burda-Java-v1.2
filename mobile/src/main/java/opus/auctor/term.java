@@ -2,7 +2,6 @@ package opus.auctor;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by yunus on 11.11.2016.

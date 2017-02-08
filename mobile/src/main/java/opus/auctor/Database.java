@@ -10,13 +10,10 @@ import java.util.Map;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.telecom.Call;
 import android.util.Log;
-import android.widget.Toast;
 
 public class Database extends SQLiteOpenHelper {
 

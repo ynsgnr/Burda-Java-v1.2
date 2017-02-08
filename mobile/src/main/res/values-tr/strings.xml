@@ -47,7 +47,7 @@
     <string name="skip">Astım</string>
     <string name="startTime">Başlangıç Zamanı</string>
     <string name="startingNotificationBody">Ders başlamak üzere!</string>
-    <string name="startingNotificationEnd"> başlıyor</string>
+    <string name="startingNotificationEnd">dersin</string>
     <string name="sunday">Pazar</string>
     <string name="teacher">Öğretmen</string>
     <string name="teacherExp">Ör: Oya Kurşun</string>
@@ -65,10 +65,12 @@
     <string name="endDate">Bitiş Tarihi</string>
     <string name="notifySkipperAfter"> </string>
     <string name="notifySkipperBefore"> </string>
-    <string name="startingNotificationStart"> </string>
+    <string name="startingNotificationStart">sınıfında başlıyor!</string>
     <string name="noClassBefore"> Sınıf Yok</string>
     <string name="attQuestionBefore"> </string>
     <string name="notifyAttendedAfter"> </string>
+    <string name="startingNotificationMid"> </string>
     <string name="checkTime">Başlangıç saati bitiş saatinden sonra olamaz</string>
     <string name="noClass">Ders Yok</string>
+    <string name="locationChooseInfo">Seçmek istediğiniz lokasyona tıklamanız yeterlidir</string>
 </resources>

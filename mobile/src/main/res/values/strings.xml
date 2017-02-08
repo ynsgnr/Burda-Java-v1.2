@@ -9,7 +9,6 @@
     <string name="term">Term:</string>
 
 
-
     <string name="chooseTerm">Please Choose Term</string>
     <string name="chooseTime">Please Add a Class Time</string>
     <string name="chooseName">Please Add a Name</string>
@@ -53,6 +52,8 @@
 
     <string name="delete">Delete</string>
 
+    <string name="locationChooseInfo">Please touch the location you want to choose</string>
+
     <string name="losingAttData">Attendance data will be lost</string>
     <string name="delAttLostData">Deleting this term will delete all attendance data in the classes of this term</string>
     <string name="changeClassLostData">Changing term will delete attendance data of this class.</string>
@@ -91,7 +92,8 @@
 
     <string name="notTerm"> is not in term  </string>
     <string name="startingNotificationStart"> </string>
-    <string name="startingNotificationEnd"> starting!</string>
+    <string name="startingNotificationEnd">!</string>
+    <string name="startingNotificationMid">starting at</string>
     <string name="startingNotificationBody">Your class is about to start</string>
 
     <string name="checkTime">Start time can\'t come after end time</string>

@@ -1,41 +1,18 @@
 package opus.auctor;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
-import android.os.NetworkOnMainThreadException;
-import android.os.Parcel;
-import android.provider.Settings;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import org.apache.commons.lang3.SerializationUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.lang.ref.SoftReference;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
