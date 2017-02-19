@@ -193,9 +193,14 @@ public class classDetails extends AppCompatActivity implements
             }
         }
 
+        Bundle args = new Bundle();
+        args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
+
         caldroidFragment.setDisableDates(outClass);
         caldroidFragment.setBackgroundDrawableForDates(data);
         caldroidFragment.setThemeResource(R.style.CaldroidDefaultArrowButton);
+        caldroidFragment.setArguments(args);
+
 
         c = (CircularProgressBar) findViewById(R.id.circularprogressbar);
         c.setSubTitle(getResources().getString(R.string.attended));
