@@ -33,7 +33,7 @@ public class classInteractions implements com.google.android.gms.location.Locati
     String SERVICE="classInteractions";
     Class c;
     Context context;
-    int LOCATIONTOLARANCE=100;
+    int LOCATIONTOLARANCE=50;
     GoogleApiClient client;
     PendingIntent pintent;
     AlarmManager alarm;
