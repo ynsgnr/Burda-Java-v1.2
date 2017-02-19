@@ -174,6 +174,7 @@ public class classDetails extends AppCompatActivity implements
         for(Map.Entry<Date, Integer> entry : att.entrySet()){
             cal.setTime(entry.getKey());
             if(tmp.checkDay(cal)) {
+                Log.d("AttPer","Cheking:"+cal.get(Calendar.DAY_OF_MONTH)+"-"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.YEAR));
                 //TODO birden fazla saat (Json objesi olabilir) onclick ile gösterilebilir (dialog?)
                 if (entry.getValue() == -1) {
                     notAtt = notAtt + 1;
@@ -268,7 +269,7 @@ public class classDetails extends AppCompatActivity implements
                         caldroidFragment.refreshView();
 
                         if(notAtt!=0){
-                            notAtt=notAtt-1;
+                            notAtt=notAtt-2;
                         }
 
                         Log.d("Attandence","Attendent: "+Integer.toString(attended)+"-Not attended: "+Integer.toString(notAtt));
@@ -281,7 +282,7 @@ public class classDetails extends AppCompatActivity implements
                         caldroidFragment.setBackgroundDrawableForDate(attColor,date);
                         caldroidFragment.refreshView();
 
-                        attended=attended+1;
+                        attended=attended+2;
 
                         Log.d("Attandence","Attendent: "+Integer.toString(attended)+"-Not attended: "+Integer.toString(notAtt));
 
@@ -293,9 +294,9 @@ public class classDetails extends AppCompatActivity implements
                         caldroidFragment.setBackgroundDrawableForDate(notAttColor,date);
                         caldroidFragment.refreshView();
 
+                        notAtt=notAtt+2;
                         if(attended!=0){
-                            notAtt=notAtt+1;
-                            attended=attended-1;
+                            attended=attended-2;
                         }
 
                         Log.d("Attandence","Attendent: "+Integer.toString(attended)+"-Not attended: "+Integer.toString(notAtt));
