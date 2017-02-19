@@ -181,7 +181,7 @@ public class Database extends SQLiteOpenHelper {
 				+ COLOR + " INTEGER,"//14
 				+ NOTIFICATON + "INTEGER," //15
 		 */
-		String selectQuery = "SELECT * FROM " + TABLE_NAME+ " WHERE id="+id;
+		String selectQuery = "SELECT * FROM " + TABLE_NAME+ " WHERE +"+CLASS_ID+"="+id;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         // Move to first row
