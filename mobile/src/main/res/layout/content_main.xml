@@ -20,7 +20,11 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true" />
 
-    <include layout="@layout/fragment_weekly_program"/>
+    <fragment
+        android:name="opus.auctor.viewElements.weeklyProgram"
+        android:id="@+id/fragment_weekly_program"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
 </FrameLayout>

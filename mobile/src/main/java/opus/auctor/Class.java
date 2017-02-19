@@ -22,26 +22,26 @@ import java.util.Map;
 @SuppressWarnings("serial") //With this annotation we are going to hide compiler warnings
 public class Class implements Serializable {
 
-    int id;
-    int primaryTimeId=0;
-    String s_name;
-    String name;
-    HashMap<Integer,classTime> classTimes = new HashMap<>();
-    Time time0=new Time();
-    Time time1=new Time();
-    int day=Calendar.MONDAY;
-    String classLocation;
-    String teacher;
-    String code;
-    String notes;
-    GeoFence geoFence=new GeoFence();
-    String geofenceId;
-    int socialId;
-    term Term = new term();
-    int color;
-    boolean notify=true;
-    int TIMETOLERANCE=5;
-    String SERVICE="Check Class Time";
+    public int id;
+    public int primaryTimeId=0;
+    public String s_name;
+    public String name;
+    public HashMap<Integer,classTime> classTimes = new HashMap<>();
+    public Time time0=new Time();
+    public Time time1=new Time();
+    public int day=Calendar.MONDAY;
+    public String classLocation;
+    public String teacher;
+    public String code;
+    public String notes;
+    public GeoFence geoFence=new GeoFence();
+    public String geofenceId;
+    public int socialId;
+    public term Term = new term();
+    public int color;
+    public boolean notify=true;
+    public int TIMETOLERANCE=5;
+    public String SERVICE="Check Class Time";
     private static final long serialVersionUID = 3842076227447073948L;
 
     public Class (Class c){
@@ -69,8 +69,8 @@ public class Class implements Serializable {
     public Class (){}
 
     public class classTime implements Serializable {
-        Time startTime = new Time();
-        Time endTime = new Time();
+        public Time startTime = new Time();
+        public Time endTime = new Time();
         int day;
         public void setDate(int d){
             Log.d("Class Time","Setting day to "+d);
