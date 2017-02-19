@@ -84,10 +84,8 @@ public class classStartService extends Service {
                             new NotificationCompat.Builder(getApplicationContext())
                                     .setSmallIcon(R.drawable.logoblue)
                                     .setContentTitle(getResources().getString(R.string.startingNotificationStart)+c.s_name + "-" + c.name
-                                            + getResources().getString(R.string.startingNotificationMid)
-                                            + " " + c.classLocation+" "
                                             + getResources().getString(R.string.startingNotificationEnd))
-                                    .setContentText(getResources().getString(R.string.startingNotificationBody))
+                                    .setContentText(getResources().getString(R.string.startingNotificationTextStart) + " "+ c.classLocation+" "+getResources().getString(R.string.startingNotificationTextEnd))
                                     .setVibrate(new long[]{1000, 1000})
                                     .setLights(ContextCompat.getColor(getApplicationContext(), R.color.logoColor), 300, 300)
                                     .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
