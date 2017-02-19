@@ -156,6 +156,8 @@ public class WeekView extends View {
     private DateTimeInterpreter mDateTimeInterpreter;
     private ScrollListener mScrollListener;
 
+    private int zoomViewLevel;
+
     private final GestureDetector.SimpleOnGestureListener mGestureListener = new GestureDetector.SimpleOnGestureListener() {
 
         @Override
@@ -325,6 +327,7 @@ public class WeekView extends View {
             mColumnGap = a.getDimensionPixelSize(R.styleable.WeekView_columnGap, mColumnGap);
             mHeaderColumnTextColor = a.getColor(R.styleable.WeekView_headerColumnTextColor, mHeaderColumnTextColor);
             mNumberOfVisibleDays = a.getInteger(R.styleable.WeekView_noOfVisibleDays, mNumberOfVisibleDays);
+            zoomViewLevel=mNumberOfVisibleDays;
             mShowFirstDayOfWeekFirst = a.getBoolean(R.styleable.WeekView_showFirstDayOfWeekFirst, mShowFirstDayOfWeekFirst);
             mHeaderRowPadding = a.getDimensionPixelSize(R.styleable.WeekView_headerRowPadding, mHeaderRowPadding);
             mHeaderRowBackgroundColor = a.getColor(R.styleable.WeekView_headerRowBackgroundColor, mHeaderRowBackgroundColor);
@@ -1304,7 +1307,7 @@ public class WeekView extends View {
                 @Override
                 public String interpretDate(Calendar date) {
                     try {
-                        SimpleDateFormat sdf = mDayNameLength == LENGTH_SHORT ? new SimpleDateFormat("EEEEE M/dd", Locale.getDefault()) : new SimpleDateFormat("EEE M/dd", Locale.getDefault());
+                        SimpleDateFormat sdf = mDayNameLength == LENGTH_SHORT ? new SimpleDateFormat("EEEEE", Locale.getDefault()) : new SimpleDateFormat("EEE", Locale.getDefault());
                         return sdf.format(date.getTime()).toUpperCase();
                     } catch (Exception e) {
                         e.printStackTrace();

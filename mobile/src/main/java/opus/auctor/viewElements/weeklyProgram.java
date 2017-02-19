@@ -38,7 +38,7 @@ import opus.auctor.classDetails;
  * create an instance of this fragment.
  */
 public class weeklyProgram extends Fragment implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener {
-
+    WeekView mWeekView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -99,14 +99,12 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
     }
 
 
-
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         // Get a reference for the week view in the layout.
-        WeekView mWeekView = (WeekView) getActivity().findViewById(R.id.weekView);
+        mWeekView = (WeekView) getActivity().findViewById(R.id.weekView);
         if(mWeekView==null){
             Log.d("Fragmet","Incoming crash, no weekview");
         }
@@ -122,12 +120,20 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
         mWeekView.setEventLongPressListener(this);
 
         mWeekView.setEmptyViewLongPressListener(this);
+
+        mWeekView.goToHour(8);
     }
 
     @Override
     public void onAttach(Context context) {
         Log.d("Fragment","onattach");
         super.onAttach(context);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mWeekView.notifyDatasetChanged();
     }
 
     @Override
@@ -149,6 +155,7 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
 
     @Override
     public void onEmptyViewLongPress(Calendar time) {
+        //TODO get to addclass with hours
     }
 
     @Override
@@ -185,6 +192,37 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
 
                 WeekViewEvent event = new WeekViewEvent(c.id, c.s_name, startTime, endTime);
                 events.add(event);
+
+
+                Calendar startTime1= (Calendar) startTime.clone();
+                startTime1.add(Calendar.DAY_OF_YEAR,7);
+
+                Calendar endTime1= (Calendar) endTime.clone();
+                endTime1.add(Calendar.DAY_OF_YEAR,7);
+
+                event = new WeekViewEvent(c.id, c.s_name, startTime1, endTime1);
+                events.add(event);
+
+
+                Calendar startTime2= (Calendar) startTime1.clone();
+                startTime2.add(Calendar.DAY_OF_YEAR,7);
+
+                Calendar endTime2= (Calendar) endTime1.clone();
+                endTime2.add(Calendar.DAY_OF_YEAR,7);
+
+                event = new WeekViewEvent(c.id, c.s_name, startTime2, endTime2);
+                events.add(event);
+
+
+                Calendar startTime3= (Calendar) startTime2.clone();
+                startTime3.add(Calendar.DAY_OF_YEAR,7);
+
+                Calendar endTime3= (Calendar) endTime2.clone();
+                endTime3.add(Calendar.DAY_OF_YEAR,7);
+
+                event = new WeekViewEvent(c.id, c.s_name, startTime3, endTime3);
+                events.add(event);
+
 
                 Log.d("Fragment","Adding class:"
                         +event.getId()+"-"+event.getName()+"-"

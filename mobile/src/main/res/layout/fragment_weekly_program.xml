@@ -10,18 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:eventTextColor="@android:color/white"
-        app:textSize="10sp"
+        app:textSize="12sp"
         app:hourHeight="60dp"
-        app:headerColumnPadding="3dp"
+        app:headerColumnPadding="1dp"
         app:headerColumnTextColor="#8f000000"
-        app:headerRowPadding="3dp"
+        app:headerRowPadding="1dp"
         app:columnGap="1dp"
-        app:noOfVisibleDays="7"
+        app:noOfVisibleDays="5"
         app:headerRowBackgroundColor="#ffefefef"
         app:dayBackgroundColor="#05000000"
         app:todayBackgroundColor="#1848adff"
         app:headerColumnBackground="#ffffffff"
         app:firstDayOfWeek="monday"
-        app:overlappingEventGap="1dp"/>
+        app:overlappingEventGap="1dp"
+        app:showNowLine="true"
+        app:nowLineColor="@color/colorAccent"/>
 
 </FrameLayout>
