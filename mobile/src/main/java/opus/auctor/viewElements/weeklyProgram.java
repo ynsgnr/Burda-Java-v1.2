@@ -2,6 +2,7 @@ package opus.auctor.viewElements;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,22 +10,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
+
+import opus.auctor.weekview.MonthLoader;
+import opus.auctor.weekview.WeekView;
+import opus.auctor.weekview.WeekViewEvent;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import opus.auctor.Class;
 import opus.auctor.Database;
-import opus.auctor.MainActivity;
 import opus.auctor.R;
 import opus.auctor.classDetails;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,10 +37,8 @@ import opus.auctor.classDetails;
  * Use the {@link weeklyProgram#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class weeklyProgram extends Fragment {
+public class weeklyProgram extends Fragment implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener {
 
-    ArrayList<Class> classes;
-    ListView list;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -98,163 +99,29 @@ public class weeklyProgram extends Fragment {
     }
 
 
+
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("Fragment","Starting fragment");
-        Database db = new Database(getActivity());
-        classes=db.Classes();
-        if (classes.size()==0){
-            //Database is empty
-            ArrayList <Class> l = new ArrayList<>();
-            ClassAdapter c = new ClassAdapter(getActivity(),l);
-            list = (ListView)getActivity().findViewById(R.id.classesMonday);
-            list.setAdapter(c);
 
-            list = (ListView) getActivity().findViewById(R.id.classesTuesday);
-            list.setAdapter(c);
-
-            list = (ListView) getActivity().findViewById(R.id.classesWednesday);
-            list.setAdapter(c);
-
-            list = (ListView) getActivity().findViewById(R.id.classesThursday);
-            list.setAdapter(c);
-
-            list = (ListView) getActivity().findViewById(R.id.classesFriday);
-            list.setAdapter(c);
+        // Get a reference for the week view in the layout.
+        WeekView mWeekView = (WeekView) getActivity().findViewById(R.id.weekView);
+        if(mWeekView==null){
+            Log.d("Fragmet","Incoming crash, no weekview");
         }
-        else{
-            //crate weekly table
-            ArrayList<Class> mondayList = new ArrayList<Class>();
-            ArrayList<Class> tuesdayList = new ArrayList<Class>();
-            ArrayList<Class> wednesdayList = new ArrayList<Class>();
-            ArrayList<Class> thursdayList = new ArrayList<Class>();
-            ArrayList<Class> fridayList = new ArrayList<Class>();
-            ArrayList<Class> saturdayList = new ArrayList<Class>();
-            ArrayList<Class> sundayList = new ArrayList<Class>();
 
+        // Set an action when any event is clicked.
+        mWeekView.setOnEventClickListener(this);
 
-            Class c;
+        // The week view has infinite scrolling horizontally. We have to provide the events of a
+        // month every time the month changes on the week view.
+        mWeekView.setMonthChangeListener(this);
 
-            for(int i=0;i<classes.size();i++)
-            {
-                c=classes.get(i);
-                //c.setAlarms(getApplicationContext());
-                for(Map.Entry<Integer, Class.classTime> entry : c.classTimes.entrySet()) {
-                    c.primaryTimeId=entry.getKey();
-                    c.setTime();
-                    Log.d("Main Table","Found time: "+c.primaryTimeId+"-"+c.day+"-"+c.s_name+" Time:"+c.time0.getString()+"-"+c.time1.getString());
-                    Class tmp = new Class(c);
-                    switch (c.day) {
-                        case Calendar.MONDAY:
-                            mondayList.add(tmp);
-                            break;
-                        case Calendar.TUESDAY:
-                            tuesdayList.add(tmp);
-                            break;
-                        case Calendar.WEDNESDAY:
-                            wednesdayList.add(tmp);
-                            break;
-                        case Calendar.THURSDAY:
-                            thursdayList.add(tmp);
-                            break;
-                        case Calendar.FRIDAY:
-                            fridayList.add(tmp);
-                            break;
-                        case Calendar.SATURDAY:
-                            saturdayList.add(tmp);
-                            break;
-                        case Calendar.SUNDAY:
-                            sundayList.add(tmp);
-                            break;
-                    }
-                }
-            }
+        // Set long press listener for events.
+        mWeekView.setEventLongPressListener(this);
 
-            //Order by time
-            sort(mondayList);
-            sort(tuesdayList);
-            sort(wednesdayList);
-            sort(thursdayList);
-            sort(fridayList);
-            sort(saturdayList);
-            sort(sundayList);
-
-            ClassAdapter tmp0 = new ClassAdapter (getActivity(), mondayList);
-            list = (ListView) getActivity().findViewById(R.id.classesMonday);
-            list.setVisibility(View.VISIBLE);
-            list.setAdapter(tmp0);
-            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Class tmp = (Class) parent.getItemAtPosition(position);
-                    Intent intent = new Intent(getActivity(),classDetails.class);
-                    //send data to addClass activity intent.putExtra("key", value);
-                    intent.putExtra("class",tmp);
-                    getActivity().startActivity(intent);
-                }
-            });
-
-            ClassAdapter tmp1 = new ClassAdapter (getActivity(), tuesdayList);
-            list = (ListView) getActivity().findViewById(R.id.classesTuesday);
-            list.setVisibility(View.VISIBLE);
-            list.setAdapter(tmp1);
-            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Class tmp = (Class) parent.getItemAtPosition(position);
-                    Intent intent = new Intent(getActivity(),classDetails.class);
-                    //send data to addClass activity intent.putExtra("key", value);
-                    intent.putExtra("class",tmp);
-                    getActivity().startActivity(intent);
-                }
-            });
-
-            ClassAdapter tmp2 = new ClassAdapter (getActivity(), wednesdayList);
-            list = (ListView) getActivity().findViewById(R.id.classesWednesday);
-            list.setVisibility(View.VISIBLE);
-            list.setAdapter(tmp2);
-            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Class tmp = (Class) parent.getItemAtPosition(position);
-                    Intent intent = new Intent(getActivity(),classDetails.class);
-                    //send data to addClass activity intent.putExtra("key", value);
-                    intent.putExtra("class",tmp);
-                    getActivity().startActivity(intent);
-                }
-            });
-
-            ClassAdapter tmp3 = new ClassAdapter (getActivity(), thursdayList);
-            list = (ListView) getActivity().findViewById(R.id.classesThursday);
-            list.setVisibility(View.VISIBLE);
-            list.setAdapter(tmp3);
-            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Class tmp = (Class) parent.getItemAtPosition(position);
-                    Intent intent = new Intent(getActivity().getApplicationContext(),classDetails.class);
-                    //send data to addClass activity intent.putExtra("key", value);
-                    intent.putExtra("class",tmp);
-                    getActivity().startActivity(intent);
-                }
-            });
-
-            ClassAdapter tmp4 = new ClassAdapter (getActivity(), fridayList);
-            list = (ListView) getActivity().findViewById(R.id.classesFriday);
-            list.setVisibility(View.VISIBLE);
-            list.setAdapter(tmp4);
-            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Class tmp = (Class) parent.getItemAtPosition(position);
-                    Intent intent = new Intent(getActivity(),classDetails.class);
-                    //send data to addClass activity intent.putExtra("key", value);
-                    intent.putExtra("class",tmp);
-                    startActivity(intent);
-                }
-            });
-        }
+        mWeekView.setEmptyViewLongPressListener(this);
     }
 
     @Override
@@ -262,6 +129,88 @@ public class weeklyProgram extends Fragment {
         Log.d("Fragment","onattach");
         super.onAttach(context);
     }
+
+    @Override
+    public void onEventClick(WeekViewEvent event, RectF eventRect) {
+        //Get class and go to classDetails
+        Database db = new Database(getActivity());
+        Class tmp = db.GetClassById((int)event.getId());
+        if(tmp!=null) {
+            Intent intent = new Intent(getActivity(), classDetails.class);
+            //send data to addClass activity
+            intent.putExtra("class", tmp);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
+    }
+
+    @Override
+    public void onEmptyViewLongPress(Calendar time) {
+    }
+
+    @Override
+    public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
+        // Populate the week view with some events.
+        List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
+
+        Database db = new Database(getActivity());
+        List<Class> classes = db.Classes();
+
+        Class c;
+        for(int i=0;i<classes.size();i++){
+            c=classes.get(i);
+            HashMap<Integer,Class.classTime> classTimes=c.classTimes;
+            for(Map.Entry<Integer, Class.classTime> entry : classTimes.entrySet()){
+                c.setTime(entry.getKey());
+
+                Calendar startTime = Calendar.getInstance();
+                startTime.set(Calendar.MONTH, newMonth-1);
+                startTime.set(Calendar.YEAR, newYear);
+                Calendar endTime = Calendar.getInstance();
+                endTime.set(Calendar.MONTH, newMonth-1);
+                endTime.set(Calendar.YEAR, newYear);
+
+                startTime.set(Calendar.DAY_OF_WEEK,c.day);
+                startTime.set(Calendar.HOUR_OF_DAY,c.time0.hour);
+                startTime.set(Calendar.MINUTE,c.time0.minute);
+                startTime.set(Calendar.SECOND,0);
+
+                endTime.set(Calendar.DAY_OF_WEEK,c.day);
+                endTime.set(Calendar.HOUR_OF_DAY,c.time1.hour);
+                endTime.set(Calendar.MINUTE,c.time1.minute);
+                endTime.set(Calendar.SECOND,0);
+
+                WeekViewEvent event = new WeekViewEvent(c.id, c.s_name, startTime, endTime);
+                events.add(event);
+
+                Log.d("Fragment","Adding class:"
+                        +event.getId()+"-"+event.getName()+"-"
+                        +startTime.get(Calendar.HOUR)+":"+startTime.get(Calendar.MINUTE)+"-"
+                        +startTime.get(Calendar.DAY_OF_MONTH)+"-"+startTime.get(Calendar.MONTH)+"-"+startTime.get(Calendar.YEAR)+"/"
+                        +endTime.get(Calendar.HOUR)+":"+endTime.get(Calendar.MINUTE)+"-"
+                        +endTime.get(Calendar.DAY_OF_MONTH)+"-"+endTime.get(Calendar.MONTH)+"-"+endTime.get(Calendar.YEAR));
+            }
+        }
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(Calendar.MONTH, newMonth-1);
+        startTime.set(Calendar.YEAR, newYear);
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(Calendar.MONTH, newMonth-1);
+        endTime.set(Calendar.YEAR, newYear);
+        for(int i=0;i<events.size();i++){
+            startTime=events.get(i).getStartTime();
+            endTime=events.get(i).getEndTime();
+            Log.d("Fragment",i+":"+events.get(i).getId()+"-"+events.get(i).getName()+"-" +
+                    startTime.get(Calendar.DAY_OF_MONTH)+"-"+startTime.get(Calendar.MONTH)+"-"+startTime.get(Calendar.YEAR)+"/"+
+                    endTime.get(Calendar.DAY_OF_MONTH)+"-"+endTime.get(Calendar.MONTH)+"-"+endTime.get(Calendar.YEAR));
+        }
+        return events;
+    }
+
+
 
     @Override
     public void onDetach() {
@@ -282,113 +231,6 @@ public class weeklyProgram extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    public void sort(ArrayList<Class> classList){
-        if (classList.size() == 0) {
-            return;
-        }
-        quickSort(classList, 0, classList.size() - 1);
-    }
-
-    private void quickSort(ArrayList<Class> classList,int lowerIndex, int higherIndex) {
-
-        int i = lowerIndex;
-        int j = higherIndex;
-        // calculate pivot number, I am taking pivot as middle index number
-        Class c = classList.get(lowerIndex+(higherIndex-lowerIndex)/2);
-        int pivot = c.classTimes.get(c.primaryTimeId).startTime.getStamp();
-        // Divide into two arrays
-        while (i <= j) {
-            /**
-             * In each iteration, we will identify a number from left side which
-             * is greater then the pivot value, and also we will identify a number
-             * from right side which is less then the pivot value. Once the search
-             * is done, then we exchange both numbers.
-             */
-            c=classList.get(i);
-            while (c.classTimes.get(c.primaryTimeId).startTime.getStamp() < pivot) {
-                Log.d("Sort",c.classTimes.get(c.primaryTimeId).startTime.getStamp()+"<"+pivot);
-                i++;
-                c=classList.get(i);
-            }
-            c=classList.get(j);
-            while (c.classTimes.get(c.primaryTimeId).startTime.getStamp() > pivot) {
-                Log.d("Sort",c.classTimes.get(c.primaryTimeId).startTime.getStamp()+">"+pivot);
-                j--;
-                c=classList.get(j);
-            }
-            if (i <= j) {
-                Collections.swap(classList,i,j);
-                Log.d("Sort","swaping:"+i+" with "+j);
-                //move index to next position on both sides
-                i++;
-                j--;
-            }
-        }
-        // call quickSort() method recursively
-        if (lowerIndex < j)
-            quickSort(classList,lowerIndex, j);
-        if (i < higherIndex)
-            quickSort(classList,i, higherIndex);
-    }
-
-    public class ClassAdapter extends BaseAdapter {
-
-        private LayoutInflater inflater;
-        private ArrayList<Class> objects;
-
-        private class ViewHolder {
-            TextView textView1;
-            TextView textView2;
-            TextView textView3;
-            TextView textView4;
-            TextView textView5;
-            TextView textView6;
-        }
-
-        public ClassAdapter(Context context, ArrayList<Class> objects) {
-            inflater = LayoutInflater.from(context);
-            this.objects = objects;
-        }
-
-        public int getCount() {
-            return objects.size();
-        }
-
-        public Class getItem(int position) {
-            return objects.get(position);
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            ViewHolder holder = null;
-            if(convertView == null) {
-                holder = new ViewHolder();
-                convertView = inflater.inflate(R.layout.list_item, null);
-                holder.textView1 = (TextView) convertView.findViewById(R.id.shortName);
-                holder.textView2 = (TextView) convertView.findViewById(R.id.className);
-                holder.textView3 = (TextView) convertView.findViewById(R.id.teacher);
-                holder.textView4 = (TextView) convertView.findViewById(R.id.classLocation);
-                holder.textView5 = (TextView) convertView.findViewById(R.id.time1);
-                holder.textView6 = (TextView) convertView.findViewById(R.id.time2);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            Class tmp = objects.get(position);
-            holder.textView1.setText(tmp.s_name);
-            holder.textView2.setText(tmp.name);
-            holder.textView3.setText(tmp.teacher);
-            holder.textView4.setText(tmp.classLocation);
-            holder.textView5.setText(tmp.time0.getString());
-            holder.textView6.setText(tmp.time1.getString());
-            Log.d("Main Table","Primary time of "+tmp.s_name+" is:"+tmp.primaryTimeId+"-"+tmp.classTimes.get(tmp.primaryTimeId).startTime.getString());
-            return convertView;
-        }
     }
 
 }

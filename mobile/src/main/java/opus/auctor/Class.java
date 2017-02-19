@@ -98,8 +98,8 @@ public class Class implements Serializable {
     }
 
     public class Time implements Serializable {
-        int hour;
-        int minute;
+        public int hour;
+        public int minute;
         public String getString(){
             return String.format("%02d", this.hour)+":"+String.format("%02d", this.minute);
         }

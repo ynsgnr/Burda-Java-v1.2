@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton fab;
     FloatingActionButton addClass;
     FloatingActionButton addTerm;
+    Fragment fragment;
 
     TextView addClassTxt;
     TextView addTermTxt;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         addTermTxt = (TextView) findViewById(R.id.addTermTxt);
         FAB_Status = false;
 
-       // Fragment fragment = getFragmentManager().findFragmentById( R.id.fragment_weekly_program );
+        fragment = getFragmentManager().findFragmentById( R.id.fragment_weekly_program );
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
+        //getFragmentManager().beginTransaction().detach(fragment).attach(fragment).commit();
 
     }
 
