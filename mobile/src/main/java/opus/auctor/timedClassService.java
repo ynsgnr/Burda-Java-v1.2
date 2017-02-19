@@ -86,7 +86,7 @@ public class timedClassService extends Service implements
                                 Tintnet.putExtra("class",data);
                                 //Tintnet.putExtra("class", c);
 
-                                Tintnet.setData(Uri.parse("id:" + c.id));
+                                Tintnet.setData(Uri.parse(Integer.toString(c.id)));
                                 pintent = PendingIntent.getService(timedClassService.this, c.primaryTimeId/*request code*/, Tintnet, PendingIntent.FLAG_UPDATE_CURRENT/*flag*/);
                                 alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                                 alarm.cancel(pintent);

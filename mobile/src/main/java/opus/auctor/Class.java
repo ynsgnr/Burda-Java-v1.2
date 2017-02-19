@@ -42,6 +42,7 @@ public class Class implements Serializable {
     boolean notify=true;
     int TIMETOLERANCE=5;
     String SERVICE="Check Class Time";
+    private static final long serialVersionUID = 3842076227447073948L;
 
     public Class (Class c){
         this.id=c.id;

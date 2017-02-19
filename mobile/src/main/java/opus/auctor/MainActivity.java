@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     //Remove later
     ListView list;
 
-    public ArrayList<Geofence> mGeofenceList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
             settings.edit().putBoolean("first_launch", false).commit();//usage of settings
         }*/
-
-        mGeofenceList = new ArrayList<Geofence>();
-
-
-
 
         //find views
         fab = (FloatingActionButton) findViewById(R.id.fab);
