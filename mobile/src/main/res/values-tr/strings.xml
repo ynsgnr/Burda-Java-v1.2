@@ -70,7 +70,6 @@
     <string name="noClassBefore"> Sınıf Yok</string>
     <string name="attQuestionBefore"> </string>
     <string name="notifyAttendedAfter"> </string>
-    <string name="startingNotificationMid"> </string>
     <string name="checkTime">Başlangıç saati bitiş saatinden sonra olamaz</string>
     <string name="noClass">Ders Yok</string>
     <string name="locationChooseInfo">Seçmek istediğiniz lokasyona tıklamanız yeterlidir</string>

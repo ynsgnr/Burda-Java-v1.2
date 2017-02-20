@@ -98,6 +98,4 @@
 
     <string name="checkTime">Start time can\'t come after end time</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
