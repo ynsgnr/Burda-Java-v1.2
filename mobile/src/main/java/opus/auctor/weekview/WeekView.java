@@ -23,6 +23,7 @@ import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.HapticFeedbackConstants;
@@ -54,6 +55,8 @@ public class WeekView extends View {
     private enum Direction {
         NONE, LEFT, RIGHT, VERTICAL
     }
+
+    private int ZOOMMULTIPLER=15;
 
     @Deprecated
     public static final int LENGTH_SHORT = 1;
@@ -103,7 +106,6 @@ public class WeekView extends View {
     private int mScaledTouchSlop = 0;
     // Attributes and their default values.
     private int mHourHeight = 50;
-    private int mNewHourHeight = -1;
     private int mMinHourHeight = 0; //no minimum specified (will be dynamic, based on screen)
     private int mEffectiveMinHourHeight = mMinHourHeight; //compensates for the fact that you can't keep zooming out.
     private int mMaxHourHeight = 250;
@@ -112,7 +114,8 @@ public class WeekView extends View {
     private int mTextSize = 12;
     private int mHeaderColumnPadding = 10;
     private int mHeaderColumnTextColor = Color.BLACK;
-    private int mNumberOfVisibleDays = 3;
+    private int mNumberOfVisibleDays = 3*ZOOMMULTIPLER;
+    private int mNewNumberOfVisibleDays = -1;
     private int mHeaderRowPadding = 10;
     private int mHeaderRowBackgroundColor = Color.WHITE;
     private int mDayBackgroundColor = Color.rgb(245, 245, 245);
@@ -325,6 +328,7 @@ public class WeekView extends View {
             mColumnGap = a.getDimensionPixelSize(R.styleable.WeekView_columnGap, mColumnGap);
             mHeaderColumnTextColor = a.getColor(R.styleable.WeekView_headerColumnTextColor, mHeaderColumnTextColor);
             mNumberOfVisibleDays = a.getInteger(R.styleable.WeekView_noOfVisibleDays, mNumberOfVisibleDays);
+            mNumberOfVisibleDays=mNumberOfVisibleDays*ZOOMMULTIPLER;
             mShowFirstDayOfWeekFirst = a.getBoolean(R.styleable.WeekView_showFirstDayOfWeekFirst, mShowFirstDayOfWeekFirst);
             mHeaderRowPadding = a.getDimensionPixelSize(R.styleable.WeekView_headerRowPadding, mHeaderRowPadding);
             mHeaderRowBackgroundColor = a.getColor(R.styleable.WeekView_headerRowBackgroundColor, mHeaderRowBackgroundColor);
@@ -460,7 +464,8 @@ public class WeekView extends View {
 
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
-                mNewHourHeight = Math.round(mHourHeight * detector.getScaleFactor());
+                Log.d("ZOOM",Float.toString(detector.getScaleFactor()));
+                mNewNumberOfVisibleDays=Math.round(mNumberOfVisibleDays * (1/detector.getScaleFactor()));
                 invalidate();
                 return true;
             }
@@ -504,7 +509,7 @@ public class WeekView extends View {
         boolean containsAllDayEvent = false;
         if (mEventRects != null && mEventRects.size() > 0) {
             for (int dayNumber = 0;
-                 dayNumber < mNumberOfVisibleDays;
+                 dayNumber < mNumberOfVisibleDays/ZOOMMULTIPLER;
                  dayNumber++) {
                 Calendar day = (Calendar) getFirstVisibleDay().clone();
                 day.add(Calendar.DATE, dayNumber);
@@ -549,30 +554,23 @@ public class WeekView extends View {
     private void drawHeaderRowAndEvents(Canvas canvas) {
 
         // Calculate the new height due to the zooming.
-        if (mNewHourHeight > 0){
-            if (mNewHourHeight < mEffectiveMinHourHeight) {
-                mNewHourHeight = mEffectiveMinHourHeight;
-                if(mNumberOfVisibleDays<7){
-                    mNumberOfVisibleDays=mNumberOfVisibleDays+1;
-                }
-
+        if (mNewNumberOfVisibleDays > 0){
+            Log.d("Zoom",Integer.toString(mNewNumberOfVisibleDays));
+            if(mNumberOfVisibleDays>7*ZOOMMULTIPLER)
+                mNumberOfVisibleDays=7*ZOOMMULTIPLER;
+            else if(mNumberOfVisibleDays<ZOOMMULTIPLER){
+                mNumberOfVisibleDays=ZOOMMULTIPLER;
             }
-            else if (mNewHourHeight > mMaxHourHeight) {
-                if(mNumberOfVisibleDays>1){
-                    mNumberOfVisibleDays=mNumberOfVisibleDays-1;
-                }
-                mNewHourHeight = mMaxHourHeight;
+            else{
+                mNumberOfVisibleDays=mNewNumberOfVisibleDays;
             }
-
-            mCurrentOrigin.y = (mCurrentOrigin.y/mHourHeight)*mNewHourHeight;
-            mHourHeight = mNewHourHeight;
-            mNewHourHeight = -1;
+            mNewNumberOfVisibleDays = -1;
         }
 
         // Calculate the available width for each day.
         mHeaderColumnWidth = mTimeTextWidth + mHeaderColumnPadding *2;
-        mWidthPerDay = getWidth() - mHeaderColumnWidth - mColumnGap * (mNumberOfVisibleDays - 1);
-        mWidthPerDay = mWidthPerDay/mNumberOfVisibleDays;
+        mWidthPerDay = getWidth() - mHeaderColumnWidth - mColumnGap * (mNumberOfVisibleDays/ZOOMMULTIPLER - 1);
+        mWidthPerDay = mWidthPerDay/(mNumberOfVisibleDays/ZOOMMULTIPLER);
 
         calculateHeaderHeight(); //Make sure the header is the right size (depends on AllDay events)
 
@@ -597,7 +595,7 @@ public class WeekView extends View {
             mIsFirstDraw = false;
 
             // If the week view is being drawn for the first time, then consider the first day of the week.
-            if(mNumberOfVisibleDays >= 7 && today.get(Calendar.DAY_OF_WEEK) != mFirstDayOfWeek && mShowFirstDayOfWeekFirst) {
+            if(mNumberOfVisibleDays >= 210 && today.get(Calendar.DAY_OF_WEEK) != mFirstDayOfWeek && mShowFirstDayOfWeekFirst) {
                 int difference = (today.get(Calendar.DAY_OF_WEEK) - mFirstDayOfWeek);
                 mCurrentOrigin.x += (mWidthPerDay + mColumnGap) * difference;
             }
@@ -626,7 +624,7 @@ public class WeekView extends View {
         // Prepare to iterate for each hour to draw the hour lines.
         int lineCount = (int) ((getHeight() - mHeaderHeight - mHeaderRowPadding * 2 -
                 mHeaderMarginBottom) / mHourHeight) + 1;
-        lineCount = (lineCount) * (mNumberOfVisibleDays+1);
+        lineCount = (lineCount) * (mNumberOfVisibleDays/ZOOMMULTIPLER+1);
         float[] hourLines = new float[lineCount * 4];
 
         // Clear the cache for event rectangles.
@@ -647,7 +645,7 @@ public class WeekView extends View {
             mScrollListener.onFirstVisibleDayChanged(mFirstVisibleDay, oldFirstVisibleDay);
         }
         for (int dayNumber = leftDaysWithGaps + 1;
-             dayNumber <= leftDaysWithGaps + mNumberOfVisibleDays + 1;
+             dayNumber <= leftDaysWithGaps + mNumberOfVisibleDays/ZOOMMULTIPLER + 1;
              dayNumber++) {
 
             // Check if the day is today.
@@ -736,7 +734,7 @@ public class WeekView extends View {
 
         // Draw the header row texts.
         startPixel = startFromPixel;
-        for (int dayNumber=leftDaysWithGaps+1; dayNumber <= leftDaysWithGaps + mNumberOfVisibleDays + 1; dayNumber++) {
+        for (int dayNumber=leftDaysWithGaps+1; dayNumber <= leftDaysWithGaps + mNumberOfVisibleDays/ZOOMMULTIPLER + 1; dayNumber++) {
             // Check if the day is today.
             day = (Calendar) today.clone();
             day.add(Calendar.DATE, dayNumber - 1);
@@ -764,7 +762,7 @@ public class WeekView extends View {
         float startPixel = mCurrentOrigin.x + (mWidthPerDay + mColumnGap) * leftDaysWithGaps +
                 mHeaderColumnWidth;
         for (int dayNumber = leftDaysWithGaps + 1;
-             dayNumber <= leftDaysWithGaps + mNumberOfVisibleDays + 1;
+             dayNumber <= leftDaysWithGaps + mNumberOfVisibleDays/ZOOMMULTIPLER + 1;
              dayNumber++) {
             float start =  (startPixel < mHeaderColumnWidth ? mHeaderColumnWidth : startPixel);
             if (mWidthPerDay + startPixel - start > 0 && x > start && x < startPixel + mWidthPerDay){
@@ -1358,7 +1356,7 @@ public class WeekView extends View {
      * @return The number of visible days in a week.
      */
     public int getNumberOfVisibleDays() {
-        return mNumberOfVisibleDays;
+        return mNumberOfVisibleDays/ZOOMMULTIPLER;
     }
 
     /**
@@ -1366,7 +1364,7 @@ public class WeekView extends View {
      * @param numberOfVisibleDays The number of visible days in a week.
      */
     public void setNumberOfVisibleDays(int numberOfVisibleDays) {
-        this.mNumberOfVisibleDays = numberOfVisibleDays;
+        this.mNumberOfVisibleDays = numberOfVisibleDays*ZOOMMULTIPLER;
         mCurrentOrigin.x = 0;
         mCurrentOrigin.y = 0;
         invalidate();
@@ -1376,10 +1374,10 @@ public class WeekView extends View {
         return mHourHeight;
     }
 
-    public void setHourHeight(int hourHeight) {
+    /*public void setHourHeight(int hourHeight) {
         mNewHourHeight = hourHeight;
         invalidate();
-    }
+    }*/
 
     public int getColumnGap() {
         return mColumnGap;
