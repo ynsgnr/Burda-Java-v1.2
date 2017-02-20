@@ -98,4 +98,8 @@
 
     <string name="checkTime">Start time can\'t come after end time</string>
 
+    <string name="main_ad_id" translatable="false">ca-app-pub-3646358189824390/2915634663</string>
+    <string name="details_ad_id" translatable="false">ca-app-pub-3646358189824390/2496832265</string>
+    <string name="details_small_ad_id" translatable="false"> ca-app-pub-3646358189824390/2996359861</string>
+
 </resources>

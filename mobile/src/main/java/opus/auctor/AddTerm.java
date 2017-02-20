@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,6 +37,8 @@ public class AddTerm extends Activity {
     FloatingActionButton done;
     Database db;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +55,8 @@ public class AddTerm extends Activity {
         mYear = cal.get(Calendar.YEAR);
         mMonth = cal.get(Calendar.MONTH);
         mDay = cal.get(Calendar.DAY_OF_MONTH);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         Term.start.day=mDay;
         Term.start.month=mMonth+1;
@@ -124,6 +130,11 @@ public class AddTerm extends Activity {
                 }
                 else{
                     db.addTerm(Term);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"AddTermActivity");
+                    mFirebaseAnalytics.logEvent("added_term", bundle);
+
                     finish();
                 }
             }
@@ -200,6 +211,11 @@ public class AddTerm extends Activity {
                         public void onClick(DialogInterface dialog, int id) {
                             db.deleteTerm(objects.get(position));
                             objects.remove(position);
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"AddTermActivity");
+                            mFirebaseAnalytics.logEvent("deleted_term", bundle);
+
                             notifyDataSetChanged();
                         }
                     });

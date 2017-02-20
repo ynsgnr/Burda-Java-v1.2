@@ -2,6 +2,7 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -50,7 +51,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="270dp"/>
+            android:layout_marginTop="340dp"/>
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adViewDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="300x50"
+            ads:adUnitId="@string/details_small_ad_id"
+            android:layout_below="@+id/circularprogressbar"
+            android:layout_marginTop="18dp">
+        </com.google.android.gms.ads.AdView>
 
 
     </RelativeLayout>

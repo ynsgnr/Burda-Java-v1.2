@@ -22,6 +22,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -34,6 +37,7 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 
@@ -68,10 +72,23 @@ public class classDetails extends AppCompatActivity implements
     ToggleButton notification;
     ArrayList<Date> outClass=new ArrayList<>();
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_details);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3646358189824390~7125508266");
+
+        AdView mAdView = (AdView) findViewById(R.id.adViewDetails);
+        AdRequest adRequest = new AdRequest.Builder()
+                //.addTestDevice("FF65CB156F114B4BCE365F6FC45A0BBC")
+                .build();
+        mAdView.loadAd(adRequest);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
@@ -260,6 +277,11 @@ public class classDetails extends AppCompatActivity implements
                 String status;
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(date);
+
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"ClassDetailsActivity");
+                mFirebaseAnalytics.logEvent("changed_att", bundle);
+
                 if(!tmp.checkDay(cal)){
                     Snackbar.make(view,getResources().getString(R.string.noClassBefore)+" "+date.toString()+" "+getResources().getString(R.string.noClassAfter), Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();

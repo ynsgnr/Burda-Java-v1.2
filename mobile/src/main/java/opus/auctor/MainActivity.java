@@ -21,7 +21,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.content.Intent;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.location.Geofence;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,11 +40,14 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton addClass;
     FloatingActionButton addTerm;
     Fragment fragment;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     TextView addClassTxt;
     TextView addTermTxt;
 
     private boolean FAB_Status;
+
+
 
 
     @Override
@@ -49,6 +57,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"Opus.Auctor");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
+
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3646358189824390~7125508266");
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                //.addTestDevice("FF65CB156F114B4BCE365F6FC45A0BBC")
+                //TODO : .setLocation(location)
+                .build();
+        mAdView.loadAd(adRequest);
 
         /*
         //Check if first start
@@ -76,6 +101,11 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"Clicked on FAB");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
                 if (FAB_Status) {
                     //Close FAB menu
                     hideFAB();
@@ -92,6 +122,9 @@ public class MainActivity extends AppCompatActivity {
                                                     FAB_Status=false;
                                                     Intent intent = new Intent(MainActivity.this.getApplicationContext(), AddClass.class);
                                                     //send data to addClass activity intent.putExtra("key", value);
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"AddClassActivityStart");
+                                                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
                                                     MainActivity.this.startActivity(intent);
                                                 }
                                             }
@@ -102,6 +135,9 @@ public class MainActivity extends AppCompatActivity {
                         hideFAB();
                         FAB_Status=false;
                         Intent intent = new Intent(MainActivity.this.getApplicationContext(),AddTerm.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"AddTermActivityStart");
+                        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
                         MainActivity.this.startActivity(intent);
                     }
                 });
@@ -129,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         objectAnimator.setDuration(450);
         objectAnimator.start();
 
-        objectAnimator= ObjectAnimator.ofFloat(addClass, "translationY",(int)(-(80*displayMetrics.density)));
+        objectAnimator= ObjectAnimator.ofFloat(addClass, "translationY",(int)(-(120*displayMetrics.density)));
         objectAnimator.setDuration(450);
         objectAnimator.start();
 
@@ -139,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         addClass.setVisibility(View.VISIBLE);
         addClass.setClickable(true);
 
-        objectAnimator= ObjectAnimator.ofFloat(addClassTxt, "translationY",(int)(-(80*displayMetrics.density)));
+        objectAnimator= ObjectAnimator.ofFloat(addClassTxt, "translationY",(int)(-(120*displayMetrics.density)));
         objectAnimator.setDuration(450);
         objectAnimator.start();
 
@@ -150,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
         //ADD TERM
 
-        objectAnimator= ObjectAnimator.ofFloat(addTerm, "translationY",(int)(-(150*displayMetrics.density)));
+        objectAnimator= ObjectAnimator.ofFloat(addTerm, "translationY",(int)(-(190*displayMetrics.density)));
         objectAnimator.setDuration(450);
         objectAnimator.start();
 
@@ -160,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         addTerm.setVisibility(View.VISIBLE);
         addTerm.setClickable(true);
 
-        objectAnimator= ObjectAnimator.ofFloat(addTermTxt, "translationY",(int)(-(150*displayMetrics.density)));
+        objectAnimator= ObjectAnimator.ofFloat(addTermTxt, "translationY",(int)(-(190*displayMetrics.density)));
         objectAnimator.setDuration(450);
         objectAnimator.start();
 

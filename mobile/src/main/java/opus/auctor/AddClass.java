@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -85,9 +86,10 @@ public class AddClass extends AppCompatActivity implements
     public double Lat;
     SupportMapFragment mapFragment;
     Class tmp;
-    //Boolean isMapBig=false;
 
     int PLACE_PICKER_REQUEST = 1;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,8 @@ public class AddClass extends AppCompatActivity implements
         ((TextView)findViewById(R.id.courseCode)).requestFocus();//Change focus to prevent keyboard poping up
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         final Intent intent = getIntent();
         tmp = (Class) intent.getSerializableExtra("class");
@@ -270,6 +274,9 @@ public class AddClass extends AppCompatActivity implements
                 {
                     Snackbar.make(View ,getResources().getString(R.string.chooseTerm) , Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"AddClassActivity");
+                    mFirebaseAnalytics.logEvent("no_term_Selected", bundle);
                 }
                     //Toast.makeText(getApplicationContext(),"Please Choose Term",Toast.LENGTH_LONG).show();
                 else {
@@ -317,6 +324,10 @@ public class AddClass extends AppCompatActivity implements
                             result.putExtra("isDeleted", false);
                             setResult(Activity.RESULT_OK, result);
 
+                            Bundle bundle = new Bundle();
+                            bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"AddClassActivity");
+                            mFirebaseAnalytics.logEvent("added_class", bundle);
+
                             finish();
                         }
                         else {
@@ -360,6 +371,11 @@ public class AddClass extends AppCompatActivity implements
                                         result.putExtra("class",tmp);
                                         result.putExtra("isDeleted", false);
                                         setResult(Activity.RESULT_OK, result);
+
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"AddClassActivity");
+                                        mFirebaseAnalytics.logEvent("deleted_class", bundle);
+
                                         finish();
                                     }
                                 });
@@ -370,6 +386,11 @@ public class AddClass extends AppCompatActivity implements
                                 result.putExtra("class",tmp);
                                 result.putExtra("isDeleted", false);
                                 setResult(Activity.RESULT_OK, result);
+
+                                Bundle bundle = new Bundle();
+                                bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"AddClassActivity");
+                                mFirebaseAnalytics.logEvent("edited_class", bundle);
+
                                 finish();
                             }
                         }

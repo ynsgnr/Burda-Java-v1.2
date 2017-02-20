@@ -176,9 +176,11 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
                 Calendar startTime = Calendar.getInstance();
                 startTime.set(Calendar.MONTH, newMonth-1);
                 startTime.set(Calendar.YEAR, newYear);
+                startTime.set(Calendar.DAY_OF_MONTH,0);
                 Calendar endTime = Calendar.getInstance();
                 endTime.set(Calendar.MONTH, newMonth-1);
                 endTime.set(Calendar.YEAR, newYear);
+                endTime.set(Calendar.DAY_OF_MONTH,0);
 
                 startTime.set(Calendar.DAY_OF_WEEK,c.day);
                 startTime.set(Calendar.HOUR_OF_DAY,c.time0.hour);
