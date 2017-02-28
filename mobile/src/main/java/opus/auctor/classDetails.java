@@ -183,7 +183,6 @@ public class classDetails extends AppCompatActivity implements
 
         Database db = new Database(getApplicationContext());
         att = db.getAtt(tmp);
-        Log.d("Database",att.toString());
 
         HashMap<Date,Drawable> data = new HashMap<>();
         outClass = new ArrayList<>();
@@ -340,7 +339,6 @@ public class classDetails extends AppCompatActivity implements
 
                     if((notAtt+attended)!=0) {
                         percentage=((attended*100)/(notAtt+attended));
-                        Log.d("Attandence",Integer.toString(percentage)+"="+Integer.toString(attended)+"/"+Integer.toString(attended+notAtt));
                     }
                     else{
                         percentage=100;
