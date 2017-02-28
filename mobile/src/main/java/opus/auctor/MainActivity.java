@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.content.Intent;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -60,20 +61,27 @@ public class MainActivity extends AppCompatActivity {
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
-
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"Opus.Auctor");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
 
+        fragment = getFragmentManager().findFragmentById( R.id.fragment_weekly_program );
+
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-3646358189824390~7125508266");
 
-        AdView mAdView = (AdView) findViewById(R.id.adView);
+        final AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder()
                 //.addTestDevice("FF65CB156F114B4BCE365F6FC45A0BBC")
                 //TODO : .setLocation(location)
                 .build();
         mAdView.loadAd(adRequest);
+
+        mAdView.setAdListener(new AdListener() {
+                                  @Override
+                                  public void onAdLoaded() {
+                                      fab.bringToFront();
+                                  }
+                              });
 
         /*
         //Check if first start
@@ -95,8 +103,6 @@ public class MainActivity extends AppCompatActivity {
         addTerm = (FloatingActionButton) findViewById(R.id.addTerm);
         addTermTxt = (TextView) findViewById(R.id.addTermTxt);
         FAB_Status = false;
-
-        fragment = getFragmentManager().findFragmentById( R.id.fragment_weekly_program );
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

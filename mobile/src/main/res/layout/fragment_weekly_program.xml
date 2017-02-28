@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="opus.auctor.viewElements.weeklyProgram">
 
+
     <opus.auctor.weekview.WeekView
         android:id="@+id/weekView"
         android:layout_width="match_parent"
@@ -17,9 +18,6 @@
         app:headerRowPadding="1dp"
         app:columnGap="1dp"
         app:noOfVisibleDays="5"
-        app:headerRowBackgroundColor="#ffefefef"
-        app:dayBackgroundColor="#05000000"
-        app:todayBackgroundColor="#1848adff"
         app:headerColumnBackground="#ffffffff"
         app:firstDayOfWeek="monday"
         app:overlappingEventGap="1dp"

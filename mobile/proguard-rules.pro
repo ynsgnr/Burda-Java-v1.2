@@ -18,3 +18,4 @@
 
 -keep public class opus.auctor.Class
 -keep public class opus.auctor.term
+-printmapping mapping.txt

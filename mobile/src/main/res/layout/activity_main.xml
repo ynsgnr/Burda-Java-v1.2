@@ -36,17 +36,6 @@
         android:layout_marginBottom="@dimen/fab_margin_below"
         android:layout_marginRight="@dimen/fab_margin" />
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_gravity="bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        ads:adSize="360x50"
-        ads:adUnitId="@string/main_ad_id">
-    </com.google.android.gms.ads.AdView>
-
     <include layout="@layout/floating_menu"/>
 
 </android.support.design.widget.CoordinatorLayout>

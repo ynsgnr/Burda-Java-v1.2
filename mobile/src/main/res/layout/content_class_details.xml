@@ -56,13 +56,12 @@
         <com.google.android.gms.ads.AdView
             android:id="@+id/adViewDetails"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            ads:adSize="300x50"
+            android:layout_height="50dp"
+            ads:adSize="320x50"
             ads:adUnitId="@string/details_small_ad_id"
             android:layout_below="@+id/circularprogressbar"
             android:layout_marginTop="18dp">
         </com.google.android.gms.ads.AdView>
-
 
     </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>
