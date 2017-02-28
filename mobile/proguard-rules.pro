@@ -18,4 +18,13 @@
 
 -keep public class opus.auctor.Class
 -keep public class opus.auctor.term
+
+-keep class com.google.ads.mediation.admob.AdMobAdapter {
+    *;
+}
+
+-keep class com.google.ads.mediation.AdUrlAdapter {
+    *;
+}
+
 -printmapping mapping.txt
