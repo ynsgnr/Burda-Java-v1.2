@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -17,6 +18,7 @@ import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.apache.commons.lang3.SerializationUtils;
 
@@ -37,6 +39,7 @@ public class classInteractions implements com.google.android.gms.location.Locati
     GoogleApiClient client;
     PendingIntent pintent;
     AlarmManager alarm;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public void initilaze(Class tmp, Context con, GoogleApiClient cli){
         Log.d(SERVICE,"Created class interactions object");
@@ -82,10 +85,17 @@ public class classInteractions implements com.google.android.gms.location.Locati
                     Log.i(SERVICE, "Location:" + Double.toString(location.getLatitude()) + "-" + Double.toString(location.getLongitude()));
                     Log.i(SERVICE, "Class Location:" + c.geoFence.Lat + "-" + c.geoFence.Long);
                     Log.d(SERVICE,"Distance:"+location.distanceTo(classLocation)+" Tolarance:"+LOCATIONTOLARANCE);
+
+                    mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+
                     if (location.distanceTo(classLocation) <= LOCATIONTOLARANCE ) {
                         Log.i(SERVICE, "signed as attended " + c.s_name);
                         att.put(new Date(Calendar.getInstance().getTimeInMillis()), 1);
                         db.uptAtt(att, c);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"TimedClassService");
+                        mFirebaseAnalytics.logEvent("changed_att_auto", bundle);
 
                         c.setAlarm(context);
 
@@ -101,6 +111,10 @@ public class classInteractions implements com.google.android.gms.location.Locati
                                 ) {
                             att.put(new Date(Calendar.getInstance().getTimeInMillis()), -1);
                             db.uptAtt(att, c);
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"TimedClassService");
+                            mFirebaseAnalytics.logEvent("changed_att_auto", bundle);
 
                             c.setAlarm(context);
 
@@ -181,7 +195,7 @@ public class classInteractions implements com.google.android.gms.location.Locati
                         .setSmallIcon(R.drawable.logoblue)
                         .setContentTitle(context.getResources().getString(R.string.noLocation))
                         .setContentText(context.getResources().getText(R.string.attQuestionBefore)+c.s_name+"-"+c.name+context.getResources().getString(R.string.attQuestionAfter))
-                        .setVibrate(new long[] { 1000, 1000})
+                        .setVibrate(new long[] {500, 1000, 500})
                         .setLights(ContextCompat.getColor(context,R.color.logoColor),1000,600)
                         .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                         .setPriority(Notification.PRIORITY_HIGH)
@@ -219,6 +233,8 @@ public class classInteractions implements com.google.android.gms.location.Locati
     public void sendInClassNotification(){
         Log.i(SERVICE,"Sending in class Notification");
 
+
+
         Intent dbIntent = new Intent(context, databaseService.class);
         dbIntent.setData(Uri.parse("id-att:"+c.id+"-"+0));
         dbIntent.putExtra("class",c);
@@ -241,7 +257,7 @@ public class classInteractions implements com.google.android.gms.location.Locati
                         .setSmallIcon(R.drawable.logoblue)
                         .setContentTitle(context.getResources().getString(R.string.notifyAttended))
                         .setContentText(context.getResources().getString(R.string.notifyAttendedBefore)+c.s_name+"-"+c.name+context.getResources().getString(R.string.notifyAttendedAfter))
-                        .setVibrate(new long[] { 1000, 1000})
+                        .setVibrate(new long[] {500, 1000, 500})
                         .setLights(ContextCompat.getColor(context,R.color.logoColor),1000,600)
                         .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                         .setPriority(Notification.PRIORITY_HIGH)
@@ -278,6 +294,10 @@ public class classInteractions implements com.google.android.gms.location.Locati
     public void sendOutOfClassNotification(){
         Log.i(SERVICE,"Sending out of class Notification");
 
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"BackgroundDataService");
+        mFirebaseAnalytics.logEvent("changed_att", bundle);
+
         Intent dbIntent = new Intent(context, databaseService.class);
         dbIntent.setData(Uri.parse("id-att:"+c.id+"-"+0));
         dbIntent.putExtra("class",c);
@@ -299,7 +319,7 @@ public class classInteractions implements com.google.android.gms.location.Locati
                         .setSmallIcon(R.drawable.logoblue)
                         .setContentTitle(context.getResources().getString(R.string.notifySkipper))
                         .setContentText(context.getResources().getString(R.string.notifySkipperBefore)+c.s_name+"-"+c.name+context.getResources().getString(R.string.notifySkipperAfter))
-                        .setVibrate(new long[] { 1000, 1000})
+                        .setVibrate(new long[] {500, 1000, 500})
                         .setLights(ContextCompat.getColor(context,R.color.logoColor),1000,600)
                         .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                         .setPriority(Notification.PRIORITY_HIGH)

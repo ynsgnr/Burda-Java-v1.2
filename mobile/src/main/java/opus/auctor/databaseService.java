@@ -4,8 +4,11 @@ import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -22,6 +25,8 @@ public class databaseService extends IntentService {
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_FOO = "opus.auctor.action.FOO";
     private static final String ACTION_BAZ = "opus.auctor.action.BAZ";
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     // TODO: Rename parameters
     private static final String EXTRA_PARAM1 = "opus.auctor.extra.PARAM1";
@@ -63,6 +68,9 @@ public class databaseService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         if (intent != null) {
             Class c = (Class) intent.getSerializableExtra("class");
             if(c!=null){
@@ -75,24 +83,29 @@ public class databaseService extends IntentService {
                         Database db = new Database(getApplicationContext());
                         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
                         notificationManager.cancel(c.id);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"BackgroundDataService");
+                        mFirebaseAnalytics.logEvent("changed_att", bundle);
+
                         switch (att) {
                             case -1:
-                                Log.i("Database Service", "Class " + c.s_name + "-" + c.name + " id:" + c.id + " | Signed as not attended");
+                                //Log.i("Database Service", "Class " + c.s_name + "-" + c.name + " id:" + c.id + " | Signed as not attended");
                                 attMap.put(date, -1);
                                 db.uptAtt(attMap, c);
-                                Toast.makeText(getApplicationContext(),c.s_name+"-"+c.name+" is attended",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(),c.s_name+"-"+c.name+" is attended",Toast.LENGTH_SHORT).show();
                                 break;
                             case 0:
-                                Log.i("Database Service", "Class " + c.s_name + "-" + c.name + " id:" + c.id + " | Signed as no class");
+                                //Log.i("Database Service", "Class " + c.s_name + "-" + c.name + " id:" + c.id + " | Signed as no class");
                                 attMap.put(date, 0);
                                 db.uptAtt(attMap, c);
-                                Toast.makeText(getApplicationContext(),c.s_name+"-"+c.name+" is canceled",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(),c.s_name+"-"+c.name+" is canceled",Toast.LENGTH_SHORT).show();
                                 break;
                             case 1:
-                                Log.i("Database Service", "Class " + c.s_name + "-" + c.name + " id:" + c.id + " | Signed as attended");
+                                //Log.i("Database Service", "Class " + c.s_name + "-" + c.name + " id:" + c.id + " | Signed as attended");
                                 attMap.put(date, 1);
                                 db.uptAtt(attMap, c);
-                                Toast.makeText(getApplicationContext(),c.s_name+"-"+c.name+" is skipped",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(),c.s_name+"-"+c.name+" is skipped",Toast.LENGTH_SHORT).show();
                                 break;
                         }
                     }
