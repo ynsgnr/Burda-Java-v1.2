@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -122,6 +124,13 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
         mWeekView.setEmptyViewLongPressListener(this);
 
         mWeekView.goToHour(8);
+
+        mWeekView.setDrawFinishedListener(new WeekView.DrawFinishedListener() {
+            @Override
+            public void drawingFinished() {
+               mWeekView.invalidate();
+            }
+        });
     }
 
     @Override
@@ -192,7 +201,7 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
                 endTime.set(Calendar.MINUTE,c.time1.minute);
                 endTime.set(Calendar.SECOND,0);
 
-                WeekViewEvent event = new WeekViewEvent(c.id, c.s_name, startTime, endTime);
+                WeekViewEvent event = new WeekViewEvent(c.id, c.s_name,c.classLocation, startTime, endTime);
                 events.add(event);
 
 
@@ -202,7 +211,7 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
                 Calendar endTime1= (Calendar) endTime.clone();
                 endTime1.add(Calendar.DAY_OF_YEAR,7);
 
-                event = new WeekViewEvent(c.id, c.s_name, startTime1, endTime1);
+                event = new WeekViewEvent(c.id, c.s_name, c.classLocation, startTime1, endTime1);
                 events.add(event);
 
 
@@ -212,7 +221,7 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
                 Calendar endTime2= (Calendar) endTime1.clone();
                 endTime2.add(Calendar.DAY_OF_YEAR,7);
 
-                event = new WeekViewEvent(c.id, c.s_name, startTime2, endTime2);
+                event = new WeekViewEvent(c.id, c.s_name, c.classLocation, startTime2, endTime2);
                 events.add(event);
 
 
@@ -222,7 +231,7 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
                 Calendar endTime3= (Calendar) endTime2.clone();
                 endTime3.add(Calendar.DAY_OF_YEAR,7);
 
-                event = new WeekViewEvent(c.id, c.s_name, startTime3, endTime3);
+                event = new WeekViewEvent(c.id, c.s_name, c.classLocation, startTime3, endTime3);
                 events.add(event);
 
 
