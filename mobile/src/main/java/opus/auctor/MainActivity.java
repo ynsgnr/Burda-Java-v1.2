@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
         final AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("FF65CB156F114B4BCE365F6FC45A0BBC")
+                //.addTestDevice("FF65CB156F114B4BCE365F6FC45A0BBC")
                 //TODO : .setLocation(location)
                 .build();
         mAdView.loadAd(adRequest);
@@ -368,7 +368,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public boolean isInstallFromUpdate() {
-/*
+
         int oldVersion=0;
         int newVersionCode=0;
 
@@ -397,15 +397,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         else
-            return false;*/
+            return false;
 
-        try {
+        /*try {
             long firstInstallTime = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0).firstInstallTime;
             long lastUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0).lastUpdateTime;
             return firstInstallTime != lastUpdateTime;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             return false;
-        }
+        }*/
     }
 }

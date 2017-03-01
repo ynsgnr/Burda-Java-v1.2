@@ -86,7 +86,7 @@ public class classDetails extends AppCompatActivity implements
 
         AdView mAdView = (AdView) findViewById(R.id.adViewDetails);
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("FF65CB156F114B4BCE365F6FC45A0BBC")
+                //.addTestDevice("FF65CB156F114B4BCE365F6FC45A0BBC")
                 .build();
         mAdView.loadAd(adRequest);
 

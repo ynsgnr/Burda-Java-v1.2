@@ -175,7 +175,7 @@ public class Class implements Serializable {
     }
 
     public int getColor(Context context){
-
+        if(this.color==0){
            int i=this.id%20;
             switch (i){
                 case 0:
@@ -241,7 +241,7 @@ public class Class implements Serializable {
                 default:
                     this.color=context.getResources().getColor(R.color.lowBlue);
             }
-
+        }
         return color;
     }
 
