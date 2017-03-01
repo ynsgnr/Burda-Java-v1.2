@@ -5,7 +5,11 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Paint;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -31,6 +36,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,6 +54,8 @@ import java.util.Calendar;
 import java.util.Map;
 
 import opus.auctor.viewElements.NonScrollListView;
+import opus.auctor.viewElements.colorPicker;
+import opus.auctor.viewElements.ColorListener;
 
 
 public class AddClass extends AppCompatActivity implements
@@ -63,11 +71,13 @@ public class AddClass extends AppCompatActivity implements
     Button timeButton0;
     Button timeButton1;
     Button addTime;
+    ImageButton color;
     int time0h;
     int time0m;
     int time1h;
     int time1m;
     int day;
+    int classColor;
     FloatingActionButton done;
     Spinner weekDay;
     Spinner terms;
@@ -86,6 +96,7 @@ public class AddClass extends AppCompatActivity implements
     public double Lat;
     SupportMapFragment mapFragment;
     Class tmp;
+    ShapeDrawable d = new ShapeDrawable(new OvalShape());
 
     int PLACE_PICKER_REQUEST = 1;
 
@@ -156,24 +167,68 @@ public class AddClass extends AppCompatActivity implements
         teacher = (EditText) findViewById(R.id.teacher);
         notes = (EditText) findViewById(R.id.notes);
         classLocation=(EditText) findViewById(R.id.classRoom);
+        color = (ImageButton) findViewById(R.id.color);
 
-        location = new LatLng(41.0761903, 29.0053389);
+        int c=getResources().getColor(R.color.colorPrimary);
+
+        d.getPaint().setColor(c);
+        d.getPaint().setStrokeWidth(1f);
+        d.setBounds(58, 58, 58, 58);
+        d.getPaint().setStyle(Paint.Style.FILL);
+        d.getPaint().setColor(c);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            color.setBackground(d);
+        else
+            color.setBackgroundDrawable(d);
+
+        color.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                colorPicker dialog = new colorPicker(AddClass.this);
+                dialog.setTitle(getResources().getString(R.string.colorPickerTitle));
+                dialog.setColorListener(new ColorListener() {
+                    @Override
+                    public void OnColorClick(View v, int c) {
+                        ShapeDrawable d = new ShapeDrawable(new OvalShape());
+                        d.getPaint().setColor(c);
+                        d.getPaint().setStrokeWidth(1f);
+                        d.setBounds(58, 58, 58, 58);
+                        d.getPaint().setStyle(Paint.Style.FILL);
+                        d.getPaint().setColor(c);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                            color.setBackground(d);
+                        else
+                            color.setBackgroundDrawable(d);
+                        d.getPaint().setColor(c);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                            color.setBackground(d);
+                        else
+                            color.setBackgroundDrawable(d);
+                        classColor=c;
+                    }
+                });
+                //customize the dialog however you want
+                dialog.show();
+            }
+        });
+
+        location = new LatLng(41.1041661,29.0252046);
 
         del = (FloatingActionButton) findViewById(R.id.deleteClass);
 
         final ArrayList<Class.classTime> classTimes = new ArrayList<>();
 
         if(tmp!=null){
-            Log.d("AddClass","Found class:"+tmp.s_name+", edit mode enabled");
+            //Log.d("AddClass","Found class:"+tmp.s_name+", edit mode enabled");
             s_name.setText(tmp.s_name);
             name.setText(tmp.name);
             classLocation.setText(tmp.classLocation);
             if(tmp.classTimes!=null){
                 //Populate classTimes
-                Log.d("AddClass","Found classs times, populating listview");
+                //Log.d("AddClass","Found classs times, populating listview");
                 for(Map.Entry<Integer, Class.classTime> entry : tmp.classTimes.entrySet()) {
                     Class.classTime t = entry.getValue();
-                    Log.d("AddClass","Added to listview: "+t.day+":"+t.startTime.getString()+"-"+t.endTime.getString());
+                    //Log.d("AddClass","Added to listview: "+t.day+":"+t.startTime.getString()+"-"+t.endTime.getString());
                     classTimes.add(t);
                 }
             }
@@ -184,6 +239,13 @@ public class AddClass extends AppCompatActivity implements
             classCode.setText(tmp.code);
             teacher.setText(tmp.teacher);
             notes.setText(tmp.notes);
+
+            d.getPaint().setColor(tmp.color);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                color.setBackground(d);
+            else
+                color.setBackgroundDrawable(d);
+            classColor=tmp.color;
 
             del.setVisibility(View.VISIBLE);
             del.bringToFront();
@@ -312,6 +374,7 @@ public class AddClass extends AppCompatActivity implements
                             //if (tmp.code=="\0") tmp.code=tmp.s_name+time0h+time0m+time1h+time1m+day;
                             c.teacher = teacher.getText().toString();
                             c.notes = notes.getText().toString();
+                            c.color = classColor;
                             c.classLocation = classLocation.getText().toString();
                             Log.d("geofence", "create geofence");
                             //Create geofence
@@ -348,6 +411,7 @@ public class AddClass extends AppCompatActivity implements
                             tmp.geoFence.Long = location.longitude;
                             tmp.geoFence.Lat = location.latitude;
                             tmp.geoFence.fenceRadius = 10; //in meters
+                            tmp.color=classColor;
 
                             //tmp=db.editClass(tmp);
                             //tmp.setAlarms(getApplicationContext());

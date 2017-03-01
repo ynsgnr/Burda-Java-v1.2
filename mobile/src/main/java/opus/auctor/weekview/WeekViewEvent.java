@@ -18,6 +18,8 @@ public class WeekViewEvent {
     private String mLocation;
     private int mColor;
     private boolean mAllDay;
+    private String fullName;
+    private String additionalInfo;
 
     public WeekViewEvent(){
 
@@ -67,25 +69,35 @@ public class WeekViewEvent {
      * @param endTime The time when the event ends.
      * @param allDay Is the event an all day event.
      */
-    public WeekViewEvent(long id, String name, String location, Calendar startTime, Calendar endTime, boolean allDay) {
+    public WeekViewEvent(long id, String name, String location, String fName, String info, Calendar startTime, Calendar endTime, boolean allDay) {
         this.mId = id;
         this.mName = name;
         this.mLocation = location;
         this.mStartTime = startTime;
         this.mEndTime = endTime;
         this.mAllDay = allDay;
+        this.fullName = fName;
+        this.additionalInfo = info;
     }
 
-    /**
-     * Initializes the event for week view.
-     * @param id The id of the event.
-     * @param name Name of the event.
-     * @param location The location of the event.
-     * @param startTime The time when the event starts.
-     * @param endTime The time when the event ends.
-     */
+    public WeekViewEvent(long id, String name, String location,Calendar startTime, Calendar endTime, boolean allDay) {
+        this(id, name, location, null, null, startTime, endTime, false);
+    }
+
+    public WeekViewEvent(long id, String name, String location , String fName, String info, Calendar startTime, Calendar endTime) {
+        this(id, name, location, fName, info, startTime, endTime, false);
+    }
+
+        /**
+         * Initializes the event for week view.
+         * @param id The id of the event.
+         * @param name Name of the event.
+         * @param location The location of the event.
+         * @param startTime The time when the event starts.
+         * @param endTime The time when the event ends.
+         */
     public WeekViewEvent(long id, String name, String location, Calendar startTime, Calendar endTime) {
-        this(id, name, location, startTime, endTime, false);
+        this(id, name, location, null, null, startTime, endTime, false);
     }
 
     /**
@@ -96,7 +108,7 @@ public class WeekViewEvent {
      * @param endTime The time when the event ends.
      */
     public WeekViewEvent(long id, String name, Calendar startTime, Calendar endTime) {
-        this(id, name, null, startTime, endTime);
+        this(id, name, null, null, null, startTime, endTime,false);
     }
 
 
@@ -154,6 +166,22 @@ public class WeekViewEvent {
 
     public void setId(long id) {
         this.mId = id;
+    }
+
+    public void setFullName (String name){
+        this.fullName=name;
+    }
+
+    public String getFullName (){
+        return this.fullName;
+    }
+
+    public void setAdditionalInfo (String info){
+        this.additionalInfo=info;
+    }
+
+    public String getAdditionalInfo (){
+        return this.additionalInfo;
     }
 
     @Override

@@ -9,7 +9,8 @@
     tools:showIn="@layout/activity_add_class"
     android:id="@+id/addClass"
     android:fillViewport="true"
-    android:clickable="false">
+    android:clickable="false"
+    android:padding="10dp">
 <RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -122,13 +123,25 @@
         android:singleLine="true" />
 
     <TextView
+        android:text="@string/color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/crn"
+        android:layout_alignLeft="@+id/crn"
+        android:layout_alignStart="@+id/crn"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"
+        android:id="@+id/colorTxt" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/teacher"
         android:id="@+id/teacherTxt"
-        android:layout_below="@+id/crn"
-        android:layout_alignLeft="@+id/crn"
-        android:layout_alignStart="@+id/crn"
+        android:layout_below="@+id/colorTxt"
+        android:layout_alignLeft="@+id/colorTxt"
+        android:layout_alignStart="@+id/colorTxt"
         android:layout_marginTop="30dp" />
 
     <TextView
@@ -232,20 +245,6 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:id="@+id/addClassTime"
-        style="@style/Widget.AppCompat.Button"
-        android:background="@drawable/custom_button"
-        android:text="+"
-        android:textColor="#FFFFFF"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_alignBottom="@+id/classHours"
-        android:layout_toRightOf="@+id/classHours"
-        android:layout_toEndOf="@+id/classHours" />
-
-    <Button
         android:layout_height="20dp"
         android:text="@string/addTerm"
         android:id="@+id/addTerm"
@@ -258,6 +257,29 @@
         android:layout_alignBottom="@+id/noTermTxt"
         android:layout_toRightOf="@+id/noTermTxt"
         android:layout_toEndOf="@+id/noTermTxt" />
+
+    <Button
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/addClassTime"
+        style="@style/Widget.AppCompat.Button"
+        android:background="@drawable/custom_button"
+        android:text="+"
+        android:textColor="#FFFFFF"
+        android:layout_above="@+id/classTimes"
+        android:layout_toRightOf="@+id/noTermTxt"
+        android:layout_toEndOf="@+id/noTermTxt" />
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/color"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_alignTop="@+id/colorTxt"
+        android:layout_toRightOf="@+id/colorTxt"
+        android:layout_toEndOf="@+id/colorTxt"
+        />
 
 </RelativeLayout>
 </ScrollView>

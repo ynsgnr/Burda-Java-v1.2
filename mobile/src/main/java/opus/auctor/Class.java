@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
@@ -171,6 +172,77 @@ public class Class implements Serializable {
             }
         }
         return false;
+    }
+
+    public int getColor(Context context){
+
+           int i=this.id%20;
+            switch (i){
+                case 0:
+                    this.color=context.getResources().getColor(R.color.blueGray);
+                    break;
+                case 1:
+                    this.color=context.getResources().getColor(R.color.brown);
+                    break;
+                case 2:
+                    this.color=context.getResources().getColor(R.color.deepOrange);
+                    break;
+                case 3:
+                    this.color=context.getResources().getColor(R.color.orange);
+                    break;
+                case 4:
+                    this.color=context.getResources().getColor(R.color.lime);
+                    break;
+                case 5:
+                    this.color=context.getResources().getColor(R.color.teal);
+                    break;
+                case 6:
+                    this.color=context.getResources().getColor(R.color.lightBlue);
+                    break;
+                case 7:
+                    this.color=context.getResources().getColor(R.color.indigo);
+                    break;
+                case 8:
+                    this.color=context.getResources().getColor(R.color.deepPurple);
+                    break;
+                case 9:
+                    this.color=context.getResources().getColor(R.color.pink);
+                    break;
+                case 10:
+                    this.color=context.getResources().getColor(R.color.red);
+                    break;
+                case 11:
+                    this.color=context.getResources().getColor(R.color.gray);
+                    break;
+                case 12:
+                    this.color=context.getResources().getColor(R.color.amber);
+                    break;
+                case 13:
+                    this.color=context.getResources().getColor(R.color.green);
+                    break;
+                case 14:
+                    this.color=context.getResources().getColor(R.color.blue);
+                    break;
+                case 15:
+                    this.color=context.getResources().getColor(R.color.purple);
+                    break;
+                case 16:
+                    this.color=context.getResources().getColor(R.color.yellow);
+                    break;
+                case 17:
+                    this.color=context.getResources().getColor(R.color.lightGreen);
+                    break;
+                case 18:
+                    this.color=context.getResources().getColor(R.color.cyan);
+                    break;
+                case 19:
+                    this.color=context.getResources().getColor(R.color.caldroid_black);
+                    break;
+                default:
+                    this.color=context.getResources().getColor(R.color.lowBlue);
+            }
+
+        return color;
     }
 
     public String getshortName(){

@@ -73,4 +73,10 @@
     <string name="checkTime">Başlangıç saati bitiş saatinden sonra olamaz</string>
     <string name="noClass">Ders Yok</string>
     <string name="locationChooseInfo">Seçmek istediğiniz lokasyona tıklamanız yeterlidir</string>
+    <string name="color">Renk:</string>
+    <string name="colorPickerTitle">Bir renk seçin</string>
+    <string name="no">Hayır</string>
+    <string name="yes">Evet</string>
+    <string name="coloredAlertTxt">Ders programınız otomatik olarak renklendirilsin mi?</string>
+    <string name="coloredAlertTite">Artık derslerinize renk ekleyebilirsiniz!</string>
 </resources>

@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -85,7 +86,7 @@ public class classDetails extends AppCompatActivity implements
 
         AdView mAdView = (AdView) findViewById(R.id.adViewDetails);
         AdRequest adRequest = new AdRequest.Builder()
-                //.addTestDevice("FF65CB156F114B4BCE365F6FC45A0BBC")
+                .addTestDevice("FF65CB156F114B4BCE365F6FC45A0BBC")
                 .build();
         mAdView.loadAd(adRequest);
 
@@ -107,15 +108,6 @@ public class classDetails extends AppCompatActivity implements
                 startActivityForResult(intent,IS_DELETED_REQUEST);
             }
         });
-
-        RelativeLayout rl = (RelativeLayout) findViewById(R.id.classContainer);
-        //TODO add different colors per class
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            rl.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.map_gradient_blue));
-            //TODO find a solution for below jely bean
-        }
-
-        //else{rl.setBackgroundColor(); "#553959d6"
 
         CollapsingToolbarLayout ctl = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         ctl.setTitle(tmp.name);
@@ -435,6 +427,19 @@ public class classDetails extends AppCompatActivity implements
             else{
                 outClass.add(entry.getKey());
             }
+        }
+
+        RelativeLayout rl = (RelativeLayout) findViewById(R.id.classContainer);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            GradientDrawable gd = new GradientDrawable(
+                    GradientDrawable.Orientation.BOTTOM_TOP,
+                    new int[] {Color.argb(255, Color.red(tmp.color), Color.green(tmp.color), Color.blue(tmp.color)),
+                            Color.argb(141, Color.red(tmp.color), Color.green(tmp.color), Color.blue(tmp.color))});
+            gd.setCornerRadius(0f);
+            rl.setBackground(gd);
+        }
+        else{
+            rl.setBackgroundColor(Color.argb(141, Color.red(tmp.color), Color.green(tmp.color), Color.blue(tmp.color)));
         }
 
         caldroidFragment.clearDisableDates();

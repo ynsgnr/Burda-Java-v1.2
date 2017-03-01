@@ -57,6 +57,8 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
         // Required empty public constructor
     }
 
+
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -142,6 +144,7 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("Fragment","onResume");
         mWeekView.notifyDatasetChanged();
     }
 
@@ -201,9 +204,9 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
                 endTime.set(Calendar.MINUTE,c.time1.minute);
                 endTime.set(Calendar.SECOND,0);
 
-                WeekViewEvent event = new WeekViewEvent(c.id, c.s_name,c.classLocation, startTime, endTime);
+                WeekViewEvent event = new WeekViewEvent(c.id, c.s_name,c.classLocation, c.name, c.teacher ,startTime, endTime);
+                event.setColor(c.color);
                 events.add(event);
-
 
                 Calendar startTime1= (Calendar) startTime.clone();
                 startTime1.add(Calendar.DAY_OF_YEAR,7);
@@ -211,7 +214,8 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
                 Calendar endTime1= (Calendar) endTime.clone();
                 endTime1.add(Calendar.DAY_OF_YEAR,7);
 
-                event = new WeekViewEvent(c.id, c.s_name, c.classLocation, startTime1, endTime1);
+                event = new WeekViewEvent(c.id, c.s_name, c.classLocation, c.name, c.teacher , startTime1, endTime1);
+                event.setColor(c.color);
                 events.add(event);
 
 
@@ -221,7 +225,8 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
                 Calendar endTime2= (Calendar) endTime1.clone();
                 endTime2.add(Calendar.DAY_OF_YEAR,7);
 
-                event = new WeekViewEvent(c.id, c.s_name, c.classLocation, startTime2, endTime2);
+                event = new WeekViewEvent(c.id, c.s_name, c.classLocation, c.name, c.teacher , startTime2, endTime2);
+                event.setColor(c.color);
                 events.add(event);
 
 
@@ -231,16 +236,9 @@ public class weeklyProgram extends Fragment implements WeekView.EventClickListen
                 Calendar endTime3= (Calendar) endTime2.clone();
                 endTime3.add(Calendar.DAY_OF_YEAR,7);
 
-                event = new WeekViewEvent(c.id, c.s_name, c.classLocation, startTime3, endTime3);
+                event = new WeekViewEvent(c.id, c.s_name, c.classLocation, c.name, c.teacher , startTime3, endTime3);
+                event.setColor(c.color);
                 events.add(event);
-
-
-                Log.d("Fragment","Adding class:"
-                        +event.getId()+"-"+event.getName()+"-"
-                        +startTime.get(Calendar.HOUR)+":"+startTime.get(Calendar.MINUTE)+"-"
-                        +startTime.get(Calendar.DAY_OF_MONTH)+"-"+startTime.get(Calendar.MONTH)+"-"+startTime.get(Calendar.YEAR)+"/"
-                        +endTime.get(Calendar.HOUR)+":"+endTime.get(Calendar.MINUTE)+"-"
-                        +endTime.get(Calendar.DAY_OF_MONTH)+"-"+endTime.get(Calendar.MONTH)+"-"+endTime.get(Calendar.YEAR));
             }
         }
         Calendar startTime = Calendar.getInstance();

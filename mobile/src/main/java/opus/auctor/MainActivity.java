@@ -3,10 +3,13 @@ package opus.auctor;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
-import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -14,10 +17,6 @@ import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.content.Intent;
 
@@ -25,14 +24,9 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.location.Geofence;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crash.FirebaseCrash;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -67,11 +61,75 @@ public class MainActivity extends AppCompatActivity {
 
         fragment = getFragmentManager().findFragmentById( R.id.fragment_weekly_program );
 
+        if(!isFirstInstall() && isInstallFromUpdate()){
+            //Show updates banner
+
+            AlertDialog.Builder alertadd = new AlertDialog.Builder(MainActivity.this);
+            LayoutInflater factory = LayoutInflater.from(MainActivity.this);
+            final View view = factory.inflate(R.layout.colored_timetable_alert, null);
+            alertadd.setView(view);
+            alertadd.setTitle(getString(R.string.coloredAlertTite));
+            alertadd.setPositiveButton(getApplicationContext().getResources().getText(R.string.yes), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //Loging
+                    Log.d("UpdateChecker","updating colors");
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"updated_activity");
+                    mFirebaseAnalytics.logEvent("colored_timetable", bundle);
+
+                    Database db = new Database(getApplicationContext());
+
+                    ArrayList<Class> classes = db.Classes();
+                    Class c;
+
+                    for(int j=0;j<classes.size();j++){
+                        c=classes.get(j);
+                        c.getColor(getApplicationContext());
+                        db.editClass(c);
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(intent);
+                    }
+                    db.close();
+                }
+            });
+
+            alertadd.setNegativeButton(getApplicationContext().getResources().getText(R.string.no), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dlg, int sumthin) {
+                    //Loging
+                    Log.d("UpdateChecker","not updating colors");
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID,"updated_activity");
+                    mFirebaseAnalytics.logEvent("no_color_timetable", bundle);
+
+                    Database db = new Database(getApplicationContext());
+
+                    ArrayList<Class> classes = db.Classes();
+                    Class c;
+                    for(int i=0;i<classes.size();i++){
+                        c=classes.get(i);
+                        c.color=getResources().getColor(R.color.colorPrimary);
+                        db.editClass(c);
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(intent);
+                    }
+                    db.close();
+                }
+            });
+
+            alertadd.show();
+
+            Log.d("UpdateChecker","app is updated, showing banner");
+
+        }
+
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-3646358189824390~7125508266");
 
         final AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder()
-                //.addTestDevice("FF65CB156F114B4BCE365F6FC45A0BBC")
+                .addTestDevice("FF65CB156F114B4BCE365F6FC45A0BBC")
                 //TODO : .setLocation(location)
                 .build();
         mAdView.loadAd(adRequest);
@@ -83,18 +141,7 @@ public class MainActivity extends AppCompatActivity {
                                   }
                               });
 
-        /*
-        //Check if first start
-        final String PREFS_NAME = "MyPrefsFile";
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        //Create new Pref File
-        if (settings.getBoolean("first_launch", true)) {
-            //Create SQlite db
 
-
-
-            settings.edit().putBoolean("first_launch", false).commit();//usage of settings
-        }*/
 
         //find views
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -305,5 +352,60 @@ public class MainActivity extends AppCompatActivity {
                 });
         objectAnimator.start();
 
+    }
+
+    public boolean isFirstInstall() {
+        try {
+            long firstInstallTime =   getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0).firstInstallTime;
+            long lastUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0).lastUpdateTime;
+            return firstInstallTime == lastUpdateTime;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+    public boolean isInstallFromUpdate() {
+/*
+        int oldVersion=0;
+        int newVersionCode=0;
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        oldVersion=pref.getInt("VersionCode",0);
+        try {
+            newVersionCode = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if(oldVersion==0) {
+            editor.putInt("VersionCode",newVersionCode);
+            return false; //Must be first run
+        }
+        else if (oldVersion<newVersionCode){
+            //app updated check installTimes
+            try {
+                long firstInstallTime = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0).firstInstallTime;
+                long lastUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0).lastUpdateTime;
+                return firstInstallTime != lastUpdateTime;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        else
+            return false;*/
+
+        try {
+            long firstInstallTime = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0).firstInstallTime;
+            long lastUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0).lastUpdateTime;
+            return firstInstallTime != lastUpdateTime;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

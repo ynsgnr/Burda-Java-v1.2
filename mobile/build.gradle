@@ -10,7 +10,7 @@ android {
         applicationId "opus.auctor"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 9
+        versionCode 8
         versionName "1.1.1"
     }
     buildTypes {

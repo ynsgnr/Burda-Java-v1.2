@@ -16,4 +16,26 @@
     <color name="logoTxtColor">#4bb222</color>
 
     <color name="white">#f9f9f9</color>
+
+    <color name="lowBlue">#40629b</color>
+    <color name="blueGray">#37474f</color>
+    <color name="gray">#FF9E9E9E</color>
+    <color name="brown">#8d6e63</color>
+    <color name="deepOrange">#914933</color>
+    <color name="orange">#ce7b00</color>
+    <color name="amber">#d8b03b</color>
+    <color name="yellow">#c6b948</color>
+    <color name="lime">#b6c337</color>
+    <color name="lightGreen">#FF8BC34A</color>
+    <color name="green">#FF4CAF50</color>
+    <color name="teal">#297c75</color>
+    <color name="cyan">#198593</color>
+    <color name="lightBlue">#2a84ad</color>
+    <color name="blue">#385a75</color>
+    <color name="indigo">#323d7c</color>
+    <color name="deepPurple">#442a72</color>
+    <color name="purple">#662b70</color>
+    <color name="pink">#a13358</color>
+    <color name="red">#a63830</color>
+
 </resources>
